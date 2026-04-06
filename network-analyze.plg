@@ -25,6 +25,7 @@
   <CHANGES>
 ###2026.04.07
 - 中文界面支持
+- 命名空间过滤：按 Host/Docker 容器显示或隐藏进程和连接
 - Per-process network monitoring
 - Connection tracking with process mapping
 - Real-time 2-second polling
@@ -73,6 +74,12 @@ $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: '/usr/local/emhttp';
       &lt;span class="na-status" id="na-status"&gt;实时 · 2秒&lt;/span&gt;
       &lt;button id="na-pause" class="na-btn" title="暂停/恢复"&gt;暂停&lt;/button&gt;
     &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Namespace Filter Bar --&gt;
+  &lt;div class="na-ns-filter-bar" id="na-ns-filter-bar"&gt;
+    &lt;span class="na-ns-filter-label"&gt;命名空间：&lt;/span&gt;
+    &lt;div id="na-ns-filters" class="na-ns-filter-list"&gt;&lt;/div&gt;
   &lt;/div&gt;
 
   &lt;!-- Processes Tab --&gt;

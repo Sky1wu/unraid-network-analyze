@@ -133,6 +133,37 @@
     display: block;
 }
 
+/* ==================== Namespace Filter Bar ==================== */
+
+.na-ns-filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding: 6px 10px;
+    background: var(--cfg-background, #1c1c1c);
+    border-radius: 4px;
+    font-size: 13px;
+}
+
+.na-ns-filter-label {
+    color: var(--cfg-text, #888);
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.na-ns-filter-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.na-ns-count {
+    color: var(--cfg-text-muted, #666);
+    font-size: 11px;
+}
+
 /* ==================== Tables ==================== */
 
 .na-table {

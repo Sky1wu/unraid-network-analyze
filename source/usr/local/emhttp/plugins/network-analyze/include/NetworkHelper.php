@@ -98,9 +98,18 @@ class NetworkHelper
     {
         $this->mapper->update();
         $connections = $this->mapper->getAllConnections();
+        $processes = $this->mapper->getProcessesWithSockets();
+
+        // Build PID → ns_net mapping
+        $pidNsMap = [];
+        foreach ($processes as $pid => $proc) {
+            $pidNsMap[$pid] = $proc['ns_net'];
+        }
 
         $result = [];
         foreach ($connections as $conn) {
+            $pid = $conn['pid'];
+            $nsNet = $pid ? ($pidNsMap[$pid] ?? '') : '';
             $result[] = [
                 'protocol' => $conn['protocol'],
                 'local_addr' => $conn['local_addr'],
@@ -108,9 +117,11 @@ class NetworkHelper
                 'remote_addr' => $conn['remote_addr'],
                 'remote_port' => $conn['remote_port'],
                 'state' => $conn['state'],
-                'pid' => $conn['pid'],
+                'pid' => $pid,
                 'process' => $conn['process'],
                 'inode' => $conn['inode'],
+                'ns_net' => $nsNet,
+                'ns_label' => $nsNet ? $this->getNsLabel($nsNet) : 'Unknown',
             ];
         }
 

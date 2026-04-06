@@ -25,6 +25,12 @@ $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: '/usr/local/emhttp';
     </div>
   </div>
 
+  <!-- Namespace Filter Bar -->
+  <div class="na-ns-filter-bar" id="na-ns-filter-bar">
+    <span class="na-ns-filter-label">命名空间：</span>
+    <div id="na-ns-filters" class="na-ns-filter-list"></div>
+  </div>
+
   <!-- Processes Tab -->
   <div class="na-panel active" id="panel-processes">
     <table class="na-table" id="process-table">

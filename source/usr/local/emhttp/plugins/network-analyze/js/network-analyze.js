@@ -21,11 +21,13 @@ var NetworkAnalyze = (function ($) {
     var connSortState = { col: 'pid', dir: 'asc' };
     var expandedPid = null;
     var searchTimer = null;
+    var hiddenNamespaces = {};
 
     // --- Initialization ---
 
     function init() {
         bindEvents();
+        loadNamespaces();
         startPolling();
     }
 
@@ -59,6 +61,44 @@ var NetworkAnalyze = (function ($) {
                 renderConnTable(connData);
             }, 300);
         });
+    }
+
+    // --- Namespace Filters ---
+
+    function loadNamespaces() {
+        $.post(AJAX_URL, { cmd: 'get_namespaces' }, function (data) {
+            var namespaces = data.namespaces || [];
+            var $container = $('#na-ns-filters');
+            var html = '';
+
+            for (var i = 0; i < namespaces.length; i++) {
+                var ns = namespaces[i];
+                var label = escHtml(ns.label);
+                var checked = hiddenNamespaces[ns.label] ? '' : ' checked';
+                html += '<label class="na-checkbox">';
+                html += '<input type="checkbox" class="na-ns-cb" data-ns-label="' + label + '"' + checked + '> ';
+                html += label + ' <span class="na-ns-count">(' + ns.process_count + ')</span>';
+                html += '</label>';
+            }
+
+            $container.html(html);
+
+            // Bind checkbox change
+            $container.find('.na-ns-cb').on('change', function () {
+                var nsLabel = $(this).data('ns-label');
+                if ($(this).is(':checked')) {
+                    delete hiddenNamespaces[nsLabel];
+                } else {
+                    hiddenNamespaces[nsLabel] = true;
+                }
+                // Re-render current tab
+                if (activeTab === 'processes') {
+                    renderProcessTable();
+                } else {
+                    renderConnTable(connData);
+                }
+            });
+        }, 'json');
     }
 
     // --- Polling ---
@@ -146,6 +186,14 @@ var NetworkAnalyze = (function ($) {
 
     function renderProcessTable() {
         var sorted = sortArray(processData, sortState.col, sortState.dir);
+
+        // Filter by namespace
+        if (Object.keys(hiddenNamespaces).length > 0) {
+            sorted = sorted.filter(function (p) {
+                return !hiddenNamespaces[p.ns_label];
+            });
+        }
+
         var rows = sorted.slice(0, MAX_PROCESS_ROWS);
         var $tbody = $('#process-table tbody');
         var html = '';
@@ -249,6 +297,7 @@ var NetworkAnalyze = (function ($) {
             if (proto !== 'all' && c.protocol !== proto) return false;
             if (state !== 'all' && c.state !== state) return false;
             if (hideTimeWait && c.state === 'TIME_WAIT') return false;
+            if (Object.keys(hiddenNamespaces).length > 0 && hiddenNamespaces[c.ns_label]) return false;
             if (search) {
                 var haystack = (c.process + ' ' + c.local_addr + ' ' + c.local_port + ' ' +
                     c.remote_addr + ' ' + c.remote_port + ' ' + c.pid).toLowerCase();
