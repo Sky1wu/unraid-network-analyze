@@ -37,7 +37,7 @@
 }
 
 .na-iface-stat {
-    color: var(--cfg-text, #b0b0b0);
+    color: var(--cfg-text, #888);
     white-space: nowrap;
 }
 
@@ -76,7 +76,7 @@
     border-bottom: none;
     border-radius: 4px 4px 0 0;
     background: var(--cfg-input-background, #2b2b2b);
-    color: var(--cfg-text, #b0b0b0);
+    color: var(--cfg-text, #888);
     cursor: pointer;
     font-size: 13px;
     transition: background 0.15s;
@@ -114,7 +114,7 @@
     border: 1px solid var(--cfg-border, #3c3c3c);
     border-radius: 3px;
     background: var(--cfg-input-background, #2b2b2b);
-    color: var(--cfg-text, #b0b0b0);
+    color: var(--cfg-text, #888);
     cursor: pointer;
     font-size: 12px;
 }
@@ -173,7 +173,7 @@
 .na-table td {
     padding: 6px 10px;
     border-bottom: 1px solid var(--cfg-border, #333);
-    color: var(--cfg-text, #b0b0b0);
+    color: var(--cfg-text, #888);
 }
 
 .na-table tbody tr:hover {
@@ -251,7 +251,7 @@
 .na-inner-table td {
     padding: 4px 8px;
     border-bottom: 1px solid var(--cfg-border, #2a2a2a);
-    color: var(--cfg-text, #b0b0b0);
+    color: var(--cfg-text, #888);
 }
 
 .na-inner-table tr:hover td {
@@ -280,7 +280,7 @@
     border: 1px solid var(--cfg-border, #3c3c3c);
     border-radius: 3px;
     background: var(--cfg-input-background, #2b2b2b);
-    color: var(--cfg-text, #b0b0b0);
+    color: var(--cfg-text, #888);
     font-size: 13px;
 }
 
@@ -293,7 +293,7 @@
     align-items: center;
     gap: 5px;
     font-size: 13px;
-    color: var(--cfg-text, #b0b0b0);
+    color: var(--cfg-text, #888);
     cursor: pointer;
 }
 
