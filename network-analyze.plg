@@ -55,10 +55,25 @@ Type="xmenu"
 Title="Network Analyze"
 Tag="network-analyze.png"
 ---
-<?php
+&lt;?php
 $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: '/usr/local/emhttp';
-parse_plugin('network-analyze');
-?>
+
+// Load plugin translations directly (_(...)_ template substitution happens before PHP, so parse_plugin() is too late)
+$_na_var = file_exists('/var/local/emhttp/var.ini') ? parse_ini_file('/var/local/emhttp/var.ini') : [];
+$_na_lang = $_na_var['LOCALE'] ?? 'en_US';
+$_na_translations = [];
+foreach (["/usr/local/emhttp/languages/{$_na_lang}/network-analyze.txt", '/usr/local/emhttp/languages/en_US/network-analyze.txt'] as $_na_f) {
+    if (file_exists($_na_f)) {
+        foreach (file($_na_f, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $_na_line) {
+            $pos = strpos($_na_line, '=');
+            if ($pos !== false) $_na_translations[substr($_na_line, 0, $pos)] = substr($_na_line, $pos + 1);
+        }
+        break;
+    }
+}
+function na_t($key) { global $_na_translations; return htmlspecialchars($_na_translations[$key] ?? $key, ENT_QUOTES, 'UTF-8'); }
+function na_js($key) { global $_na_translations; return json_encode($_na_translations[$key] ?? $key); }
+?&gt;
 &lt;link type="text/css" rel="stylesheet" href="/plugins/network-analyze/css/network-analyze.css"&gt;
 
 &lt;div class="network-analyze"&gt;
@@ -69,18 +84,18 @@ parse_plugin('network-analyze');
   &lt;!-- Toolbar --&gt;
   &lt;div class="na-toolbar"&gt;
     &lt;div class="na-tabs"&gt;
-      &lt;button class="na-tab active" data-tab="processes"&gt;_(Processes)_&lt;/button&gt;
-      &lt;button class="na-tab" data-tab="connections"&gt;_(Connections)_&lt;/button&gt;
+      &lt;button class="na-tab active" data-tab="processes"&gt;&lt;?= na_t('Processes') ?&gt;&lt;/button&gt;
+      &lt;button class="na-tab" data-tab="connections"&gt;&lt;?= na_t('Connections') ?&gt;&lt;/button&gt;
     &lt;/div&gt;
     &lt;div class="na-controls"&gt;
-      &lt;span class="na-status" id="na-status"&gt;_(Live · 2s)_&lt;/span&gt;
-      &lt;button id="na-pause" class="na-btn" title="_(Pause / Resume)_"&gt;_(Pause)_&lt;/button&gt;
+      &lt;span class="na-status" id="na-status"&gt;&lt;?= na_t('Live · 2s') ?&gt;&lt;/span&gt;
+      &lt;button id="na-pause" class="na-btn" title="&lt;?= na_t('Pause / Resume') ?&gt;"&gt;&lt;?= na_t('Pause') ?&gt;&lt;/button&gt;
     &lt;/div&gt;
   &lt;/div&gt;
 
   &lt;!-- Namespace Filter Bar --&gt;
   &lt;div class="na-ns-filter-bar" id="na-ns-filter-bar"&gt;
-    &lt;span class="na-ns-filter-label"&gt;_(Namespace:)_&lt;/span&gt;
+    &lt;span class="na-ns-filter-label"&gt;&lt;?= na_t('Namespace:') ?&gt;&lt;/span&gt;
     &lt;div id="na-ns-filters" class="na-ns-filter-list"&gt;&lt;/div&gt;
   &lt;/div&gt;
 
@@ -89,13 +104,13 @@ parse_plugin('network-analyze');
     &lt;table class="na-table" id="process-table"&gt;
       &lt;thead&gt;
         &lt;tr&gt;
-          &lt;th data-col="comm" class="sortable"&gt;_(Process)_&lt;/th&gt;
+          &lt;th data-col="comm" class="sortable"&gt;&lt;?= na_t('Process') ?&gt;&lt;/th&gt;
           &lt;th data-col="pid" class="sortable"&gt;PID&lt;/th&gt;
-          &lt;th data-col="ns_label" class="sortable"&gt;_(Namespace)_&lt;/th&gt;
-          &lt;th data-col="socket_count" class="sortable"&gt;_(Socket Count)_&lt;/th&gt;
-          &lt;th data-col="io_rx_rate" class="sortable" title="_(Process read rate (includes disk reads + network receive, cannot isolate network-only))_"&gt;_(Read I/O Rate)_&lt;/th&gt;
-          &lt;th data-col="io_tx_rate" class="sortable" title="_(Process write rate (includes disk writes + network send, cannot isolate network-only))_"&gt;_(Write I/O Rate)_&lt;/th&gt;
-          &lt;th data-col="connections"&gt;_(Connections)_&lt;/th&gt;
+          &lt;th data-col="ns_label" class="sortable"&gt;&lt;?= na_t('Namespace') ?&gt;&lt;/th&gt;
+          &lt;th data-col="socket_count" class="sortable"&gt;&lt;?= na_t('Socket Count') ?&gt;&lt;/th&gt;
+          &lt;th data-col="io_rx_rate" class="sortable" title="&lt;?= na_t('Process read rate (includes disk reads + network receive, cannot isolate network-only)') ?&gt;"&gt;&lt;?= na_t('Read I/O Rate') ?&gt;&lt;/th&gt;
+          &lt;th data-col="io_tx_rate" class="sortable" title="&lt;?= na_t('Process write rate (includes disk writes + network send, cannot isolate network-only)') ?&gt;"&gt;&lt;?= na_t('Write I/O Rate') ?&gt;&lt;/th&gt;
+          &lt;th data-col="connections"&gt;&lt;?= na_t('Connections') ?&gt;&lt;/th&gt;
         &lt;/tr&gt;
       &lt;/thead&gt;
       &lt;tbody&gt;&lt;/tbody&gt;
@@ -107,34 +122,34 @@ parse_plugin('network-analyze');
   &lt;div class="na-panel" id="panel-connections"&gt;
     &lt;div class="na-filters"&gt;
       &lt;select id="filter-protocol"&gt;
-        &lt;option value="all"&gt;_(All Protocols)_&lt;/option&gt;
+        &lt;option value="all"&gt;&lt;?= na_t('All Protocols') ?&gt;&lt;/option&gt;
         &lt;option value="tcp"&gt;TCP&lt;/option&gt;
         &lt;option value="tcp6"&gt;TCP6&lt;/option&gt;
         &lt;option value="udp"&gt;UDP&lt;/option&gt;
         &lt;option value="udp6"&gt;UDP6&lt;/option&gt;
       &lt;/select&gt;
       &lt;select id="filter-state"&gt;
-        &lt;option value="all"&gt;_(All States)_&lt;/option&gt;
+        &lt;option value="all"&gt;&lt;?= na_t('All States') ?&gt;&lt;/option&gt;
         &lt;option value="ESTABLISHED"&gt;ESTABLISHED&lt;/option&gt;
         &lt;option value="LISTEN"&gt;LISTEN&lt;/option&gt;
         &lt;option value="TIME_WAIT"&gt;TIME_WAIT&lt;/option&gt;
         &lt;option value="CLOSE_WAIT"&gt;CLOSE_WAIT&lt;/option&gt;
         &lt;option value="SYN_SENT"&gt;SYN_SENT&lt;/option&gt;
       &lt;/select&gt;
-      &lt;input type="text" id="filter-search" placeholder="_(Search IP, port, process...)_"&gt;
+      &lt;input type="text" id="filter-search" placeholder="&lt;?= na_t('Search IP, port, process...') ?&gt;"&gt;
       &lt;label class="na-checkbox"&gt;
-        &lt;input type="checkbox" id="filter-hide-timewait"&gt; _(Hide TIME_WAIT)_
+        &lt;input type="checkbox" id="filter-hide-timewait"&gt; &lt;?= na_t('Hide TIME_WAIT') ?&gt;
       &lt;/label&gt;
     &lt;/div&gt;
     &lt;table class="na-table" id="connection-table"&gt;
       &lt;thead&gt;
         &lt;tr&gt;
-          &lt;th data-col="process" class="sortable"&gt;_(Process)_&lt;/th&gt;
+          &lt;th data-col="process" class="sortable"&gt;&lt;?= na_t('Process') ?&gt;&lt;/th&gt;
           &lt;th data-col="pid" class="sortable"&gt;PID&lt;/th&gt;
-          &lt;th data-col="protocol" class="sortable"&gt;_(Protocol)_&lt;/th&gt;
-          &lt;th data-col="local_addr" class="sortable"&gt;_(Local Address)_&lt;/th&gt;
-          &lt;th data-col="remote_addr" class="sortable"&gt;_(Remote Address)_&lt;/th&gt;
-          &lt;th data-col="state" class="sortable"&gt;_(State)_&lt;/th&gt;
+          &lt;th data-col="protocol" class="sortable"&gt;&lt;?= na_t('Protocol') ?&gt;&lt;/th&gt;
+          &lt;th data-col="local_addr" class="sortable"&gt;&lt;?= na_t('Local Address') ?&gt;&lt;/th&gt;
+          &lt;th data-col="remote_addr" class="sortable"&gt;&lt;?= na_t('Remote Address') ?&gt;&lt;/th&gt;
+          &lt;th data-col="state" class="sortable"&gt;&lt;?= na_t('State') ?&gt;&lt;/th&gt;
         &lt;/tr&gt;
       &lt;/thead&gt;
       &lt;tbody&gt;&lt;/tbody&gt;
@@ -145,20 +160,20 @@ parse_plugin('network-analyze');
 
 &lt;script&gt;
 var _NA_I18N = {
-  'Pause': '_(Pause)_',
-  'Resume': '_(Resume)_',
-  'Paused': '_(Paused)_',
-  'Live · 2s': '_(Live · 2s)_',
-  'Protocol': '_(Protocol)_',
-  'Local': '_(Local)_',
-  'Remote': '_(Remote)_',
-  'State': '_(State)_',
-  'Showing first 20 connections, switch to "Connections" tab for the full list.': '_(Showing first 20 connections, switch to "Connections" tab for the full list.)_',
-  'No processes with network activity found': '_(No processes with network activity found)_',
-  'Showing first {n} processes (of {total}, sorted by socket count)': '_(Showing first {n} processes (of {total}, sorted by socket count))_',
-  'No connections match current filters': '_(No connections match current filters)_',
-  'Showing first {n} connections (of {total})': '_(Showing first {n} connections (of {total}))_',
-  'No network interfaces detected': '_(No network interfaces detected)_'
+  'Pause': &lt;?= na_js('Pause') ?&gt;,
+  'Resume': &lt;?= na_js('Resume') ?&gt;,
+  'Paused': &lt;?= na_js('Paused') ?&gt;,
+  'Live · 2s': &lt;?= na_js('Live · 2s') ?&gt;,
+  'Protocol': &lt;?= na_js('Protocol') ?&gt;,
+  'Local': &lt;?= na_js('Local') ?&gt;,
+  'Remote': &lt;?= na_js('Remote') ?&gt;,
+  'State': &lt;?= na_js('State') ?&gt;,
+  'Showing first 20 connections, switch to "Connections" tab for the full list.': &lt;?= na_js('Showing first 20 connections, switch to "Connections" tab for the full list.') ?&gt;,
+  'No processes with network activity found': &lt;?= na_js('No processes with network activity found') ?&gt;,
+  'Showing first {n} processes (of {total}, sorted by socket count)': &lt;?= na_js('Showing first {n} processes (of {total}, sorted by socket count)') ?&gt;,
+  'No connections match current filters': &lt;?= na_js('No connections match current filters') ?&gt;,
+  'Showing first {n} connections (of {total})': &lt;?= na_js('Showing first {n} connections (of {total})') ?&gt;,
+  'No network interfaces detected': &lt;?= na_js('No network interfaces detected') ?&gt;
 };
 function _(key) { return _NA_I18N[key] !== undefined ? _NA_I18N[key] : key; }
 &lt;/script&gt;
