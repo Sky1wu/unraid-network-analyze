@@ -1,0 +1,87 @@
+Menu="Tasks:65"
+Type="xmenu"
+Title="Network Analyze"
+Tag="network-analyze.png"
+---
+<?php
+$docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: '/usr/local/emhttp';
+?>
+<link type="text/css" rel="stylesheet" href="/plugins/network-analyze/css/network-analyze.css">
+
+<div class="network-analyze">
+
+  <!-- Interface Summary Bar -->
+  <div class="na-iface-bar" id="na-iface-bar"></div>
+
+  <!-- Toolbar -->
+  <div class="na-toolbar">
+    <div class="na-tabs">
+      <button class="na-tab active" data-tab="processes">Processes</button>
+      <button class="na-tab" data-tab="connections">Connections</button>
+    </div>
+    <div class="na-controls">
+      <span class="na-status" id="na-status">Live &middot; 2s</span>
+      <button id="na-pause" class="na-btn" title="Pause/Resume">Pause</button>
+    </div>
+  </div>
+
+  <!-- Processes Tab -->
+  <div class="na-panel active" id="panel-processes">
+    <table class="na-table" id="process-table">
+      <thead>
+        <tr>
+          <th data-col="comm" class="sortable">Process</th>
+          <th data-col="pid" class="sortable">PID</th>
+          <th data-col="ns_label" class="sortable">Namespace</th>
+          <th data-col="socket_count" class="sortable">Sockets</th>
+          <th data-col="io_rx_rate" class="sortable">I/O RX Rate</th>
+          <th data-col="io_tx_rate" class="sortable">I/O TX Rate</th>
+          <th data-col="connections">Connections</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <div class="na-detail" id="process-detail" style="display:none"></div>
+  </div>
+
+  <!-- Connections Tab -->
+  <div class="na-panel" id="panel-connections">
+    <div class="na-filters">
+      <select id="filter-protocol">
+        <option value="all">All Protocols</option>
+        <option value="tcp">TCP</option>
+        <option value="tcp6">TCP6</option>
+        <option value="udp">UDP</option>
+        <option value="udp6">UDP6</option>
+      </select>
+      <select id="filter-state">
+        <option value="all">All States</option>
+        <option value="ESTABLISHED">ESTABLISHED</option>
+        <option value="LISTEN">LISTEN</option>
+        <option value="TIME_WAIT">TIME_WAIT</option>
+        <option value="CLOSE_WAIT">CLOSE_WAIT</option>
+        <option value="SYN_SENT">SYN_SENT</option>
+      </select>
+      <input type="text" id="filter-search" placeholder="Search IP, port, process...">
+      <label class="na-checkbox">
+        <input type="checkbox" id="filter-hide-timewait"> Hide TIME_WAIT
+      </label>
+    </div>
+    <table class="na-table" id="connection-table">
+      <thead>
+        <tr>
+          <th data-col="process" class="sortable">Process</th>
+          <th data-col="pid" class="sortable">PID</th>
+          <th data-col="protocol" class="sortable">Protocol</th>
+          <th data-col="local_addr" class="sortable">Local Address</th>
+          <th data-col="remote_addr" class="sortable">Remote Address</th>
+          <th data-col="state" class="sortable">State</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+</div>
+
+<script src="/plugins/network-analyze/js/network-analyze.js"></script>

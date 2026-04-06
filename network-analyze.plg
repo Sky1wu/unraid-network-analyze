@@ -1,0 +1,173 @@
+<?xml version='1.0' standalone='yes'?>
+<!DOCTYPE PLUGIN [
+  <!ENTITY name      "network-analyze">
+  <!ENTITY author    "sky1wu">
+  <!ENTITY version   "2026.04.06">
+  <!ENTITY gitURL    "https://github.com/&author;/unraid-network-analyze/raw/master">
+  <!ENTITY pluginURL "&gitURL;/&name;.plg">
+  <!ENTITY plugin    "/boot/config/plugins/&name;">
+  <!ENTITY emhttp    "/usr/local/emhttp/plugins/&name;">
+]>
+
+<PLUGIN name="&name;" author="&author;" version="&version;"
+        pluginURL="&pluginURL;" min="6.9.0">
+
+  <CHANGES>
+###2026.04.06
+- Initial release
+- Per-process network monitoring
+- Connection tracking with process mapping
+- Real-time 2-second polling
+  </CHANGES>
+
+  <!-- Remove old package versions -->
+  <FILE Run="/bin/bash">
+    <INLINE>
+      rm -f $(ls &plugin;/&name;*.tgz 2>/dev/null|grep -v '&version;')
+    </INLINE>
+  </FILE>
+
+  <!-- Create plugin config directory -->
+  <FILE Run="/bin/bash">
+    <INLINE>
+      mkdir -p &plugin;
+      mkdir -p &emhttp;/include &emhttp;/js &emhttp;/css &emhttp;/icons
+    </INLINE>
+  </FILE>
+
+  <!-- Install page definition -->
+  <FILE Name="&emhttp;/NetworkAnalyze.page">
+    <INLINE>
+Menu="Tasks:65"
+Type="xmenu"
+Title="Network Analyze"
+Tag="network-analyze.png"
+---
+<?php
+$docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: '/usr/local/emhttp';
+?>
+&lt;link type="text/css" rel="stylesheet" href="/plugins/network-analyze/css/network-analyze.css"&gt;
+
+&lt;div class="network-analyze"&gt;
+
+  &lt;!-- Interface Summary Bar --&gt;
+  &lt;div class="na-iface-bar" id="na-iface-bar"&gt;&lt;/div&gt;
+
+  &lt;!-- Toolbar --&gt;
+  &lt;div class="na-toolbar"&gt;
+    &lt;div class="na-tabs"&gt;
+      &lt;button class="na-tab active" data-tab="processes"&gt;Processes&lt;/button&gt;
+      &lt;button class="na-tab" data-tab="connections"&gt;Connections&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class="na-controls"&gt;
+      &lt;span class="na-status" id="na-status"&gt;Live &amp;middot; 2s&lt;/span&gt;
+      &lt;button id="na-pause" class="na-btn" title="Pause/Resume"&gt;Pause&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Processes Tab --&gt;
+  &lt;div class="na-panel active" id="panel-processes"&gt;
+    &lt;table class="na-table" id="process-table"&gt;
+      &lt;thead&gt;
+        &lt;tr&gt;
+          &lt;th data-col="comm" class="sortable"&gt;Process&lt;/th&gt;
+          &lt;th data-col="pid" class="sortable"&gt;PID&lt;/th&gt;
+          &lt;th data-col="ns_label" class="sortable"&gt;Namespace&lt;/th&gt;
+          &lt;th data-col="socket_count" class="sortable"&gt;Sockets&lt;/th&gt;
+          &lt;th data-col="io_rx_rate" class="sortable"&gt;I/O RX Rate&lt;/th&gt;
+          &lt;th data-col="io_tx_rate" class="sortable"&gt;I/O TX Rate&lt;/th&gt;
+          &lt;th data-col="connections"&gt;Connections&lt;/th&gt;
+        &lt;/tr&gt;
+      &lt;/thead&gt;
+      &lt;tbody&gt;&lt;/tbody&gt;
+    &lt;/table&gt;
+    &lt;div class="na-detail" id="process-detail" style="display:none"&gt;&lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Connections Tab --&gt;
+  &lt;div class="na-panel" id="panel-connections"&gt;
+    &lt;div class="na-filters"&gt;
+      &lt;select id="filter-protocol"&gt;
+        &lt;option value="all"&gt;All Protocols&lt;/option&gt;
+        &lt;option value="tcp"&gt;TCP&lt;/option&gt;
+        &lt;option value="tcp6"&gt;TCP6&lt;/option&gt;
+        &lt;option value="udp"&gt;UDP&lt;/option&gt;
+        &lt;option value="udp6"&gt;UDP6&lt;/option&gt;
+      &lt;/select&gt;
+      &lt;select id="filter-state"&gt;
+        &lt;option value="all"&gt;All States&lt;/option&gt;
+        &lt;option value="ESTABLISHED"&gt;ESTABLISHED&lt;/option&gt;
+        &lt;option value="LISTEN"&gt;LISTEN&lt;/option&gt;
+        &lt;option value="TIME_WAIT"&gt;TIME_WAIT&lt;/option&gt;
+        &lt;option value="CLOSE_WAIT"&gt;CLOSE_WAIT&lt;/option&gt;
+        &lt;option value="SYN_SENT"&gt;SYN_SENT&lt;/option&gt;
+      &lt;/select&gt;
+      &lt;input type="text" id="filter-search" placeholder="Search IP, port, process..."&gt;
+      &lt;label class="na-checkbox"&gt;
+        &lt;input type="checkbox" id="filter-hide-timewait"&gt; Hide TIME_WAIT
+      &lt;/label&gt;
+    &lt;/div&gt;
+    &lt;table class="na-table" id="connection-table"&gt;
+      &lt;thead&gt;
+        &lt;tr&gt;
+          &lt;th data-col="process" class="sortable"&gt;Process&lt;/th&gt;
+          &lt;th data-col="pid" class="sortable"&gt;PID&lt;/th&gt;
+          &lt;th data-col="protocol" class="sortable"&gt;Protocol&lt;/th&gt;
+          &lt;th data-col="local_addr" class="sortable"&gt;Local Address&lt;/th&gt;
+          &lt;th data-col="remote_addr" class="sortable"&gt;Remote Address&lt;/th&gt;
+          &lt;th data-col="state" class="sortable"&gt;State&lt;/th&gt;
+        &lt;/tr&gt;
+      &lt;/thead&gt;
+      &lt;tbody&gt;&lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;script src="/plugins/network-analyze/js/network-analyze.js"&gt;&lt;/script&gt;
+    </INLINE>
+  </FILE>
+
+  <!-- Install PHP backend -->
+  <FILE Name="&emhttp;/include/ajax.php">
+    <URL>&gitURL;/source/usr/local/emhttp/plugins/network-analyze/include/ajax.php</URL>
+  </FILE>
+
+  <FILE Name="&emhttp;/include/NetworkHelper.php">
+    <URL>&gitURL;/source/usr/local/emhttp/plugins/network-analyze/include/NetworkHelper.php</URL>
+  </FILE>
+
+  <FILE Name="&emhttp;/include/ConnectionMapper.php">
+    <URL>&gitURL;/source/usr/local/emhttp/plugins/network-analyze/include/ConnectionMapper.php</URL>
+  </FILE>
+
+  <!-- Install frontend -->
+  <FILE Name="&emhttp;/js/network-analyze.js">
+    <URL>&gitURL;/source/usr/local/emhttp/plugins/network-analyze/js/network-analyze.js</URL>
+  </FILE>
+
+  <FILE Name="&emhttp;/css/network-analyze.css">
+    <URL>&gitURL;/source/usr/local/emhttp/plugins/network-analyze/css/network-analyze.css</URL>
+  </FILE>
+
+  <!-- Set permissions -->
+  <FILE Run="/bin/bash">
+    <INLINE>
+      chmod 755 &emhttp;/include/ajax.php
+      chmod 755 &emhttp;/include/NetworkHelper.php
+      chmod 755 &emhttp;/include/ConnectionMapper.php
+      chmod 644 &emhttp;/NetworkAnalyze.page
+      chmod 644 &emhttp;/js/network-analyze.js
+      chmod 644 &emhttp;/css/network-analyze.css
+    </INLINE>
+  </FILE>
+
+  <!-- Uninstall script -->
+  <FILE Run="/bin/bash" Method="remove">
+    <INLINE>
+      rm -rf &emhttp;
+      rm -rf &plugin;
+    </INLINE>
+  </FILE>
+
+</PLUGIN>

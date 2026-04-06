@@ -1,0 +1,346 @@
+/* Network Analyze - Unraid Plugin Styles */
+
+/* ==================== Layout ==================== */
+
+.network-analyze {
+    padding: 10px 0;
+}
+
+/* Interface Summary Bar */
+.na-iface-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 15px;
+    padding: 10px;
+    background: var(--cfg-background, #1c1c1c);
+    border-radius: 4px;
+}
+
+.na-iface-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 14px;
+    background: var(--cfg-input-background, #2b2b2b);
+    border: 1px solid var(--cfg-border, #3c3c3c);
+    border-radius: 4px;
+    font-size: 13px;
+}
+
+.na-iface-name {
+    font-weight: bold;
+    color: var(--cfg-text, #e0e0e0);
+    min-width: 60px;
+}
+
+.na-iface-stat {
+    color: var(--cfg-text, #ccc);
+    white-space: nowrap;
+}
+
+.na-iface-empty {
+    color: var(--cfg-text-muted, #888);
+    font-style: italic;
+}
+
+.na-arrow.na-up {
+    color: #e55;
+}
+
+.na-arrow.na-down {
+    color: #5a5;
+}
+
+/* ==================== Toolbar ==================== */
+
+.na-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--cfg-border, #3c3c3c);
+}
+
+.na-tabs {
+    display: flex;
+    gap: 2px;
+}
+
+.na-tab {
+    padding: 6px 18px;
+    border: 1px solid var(--cfg-border, #3c3c3c);
+    border-bottom: none;
+    border-radius: 4px 4px 0 0;
+    background: var(--cfg-input-background, #2b2b2b);
+    color: var(--cfg-text, #ccc);
+    cursor: pointer;
+    font-size: 13px;
+    transition: background 0.15s;
+}
+
+.na-tab:hover {
+    background: var(--cfg-hover, #383838);
+}
+
+.na-tab.active {
+    background: var(--cfg-background, #1c1c1c);
+    color: var(--cfg-text, #e0e0e0);
+    font-weight: bold;
+    border-bottom: 2px solid #e25200;
+}
+
+.na-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.na-status {
+    font-size: 12px;
+    color: var(--cfg-text-muted, #888);
+}
+
+.na-paused {
+    color: #e55;
+    font-weight: bold;
+}
+
+.na-btn {
+    padding: 4px 12px;
+    border: 1px solid var(--cfg-border, #3c3c3c);
+    border-radius: 3px;
+    background: var(--cfg-input-background, #2b2b2b);
+    color: var(--cfg-text, #ccc);
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.na-btn:hover {
+    background: var(--cfg-hover, #383838);
+}
+
+/* ==================== Panels ==================== */
+
+.na-panel {
+    display: none;
+}
+
+.na-panel.active {
+    display: block;
+}
+
+/* ==================== Tables ==================== */
+
+.na-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.na-table th {
+    padding: 8px 10px;
+    text-align: left;
+    background: var(--cfg-input-background, #2b2b2b);
+    color: var(--cfg-text, #e0e0e0);
+    border-bottom: 2px solid var(--cfg-border, #3c3c3c);
+    font-weight: bold;
+    white-space: nowrap;
+    user-select: none;
+}
+
+.na-table th.sortable {
+    cursor: pointer;
+}
+
+.na-table th.sortable:hover {
+    background: var(--cfg-hover, #383838);
+}
+
+.na-table th.sort-asc::after {
+    content: ' \25B2';
+    font-size: 10px;
+}
+
+.na-table th.sort-desc::after {
+    content: ' \25BC';
+    font-size: 10px;
+}
+
+.na-table td {
+    padding: 6px 10px;
+    border-bottom: 1px solid var(--cfg-border, #333);
+    color: var(--cfg-text, #ccc);
+}
+
+.na-table tbody tr:hover {
+    background: var(--cfg-hover, #2a2a2a);
+}
+
+.na-table .na-empty {
+    text-align: center;
+    padding: 30px;
+    color: var(--cfg-text-muted, #888);
+    font-style: italic;
+}
+
+.na-table .na-more {
+    text-align: center;
+    padding: 8px;
+    color: var(--cfg-text-muted, #888);
+    font-size: 12px;
+}
+
+/* ==================== Process Table ==================== */
+
+.na-proc-row {
+    cursor: pointer;
+}
+
+.na-proc-row.expanded {
+    background: var(--cfg-hover, #333);
+}
+
+.na-proc-name {
+    font-weight: bold;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.na-ns-badge {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 11px;
+    background: var(--cfg-input-background, #333);
+    border: 1px solid var(--cfg-border, #444);
+}
+
+.na-expand-hint {
+    font-size: 10px;
+    color: var(--cfg-text-muted, #888);
+}
+
+/* Inner detail table */
+.na-detail-row td {
+    padding: 0 10px 10px 10px;
+}
+
+.na-inner-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 5px 0;
+    font-size: 12px;
+}
+
+.na-inner-table th {
+    padding: 5px 8px;
+    text-align: left;
+    background: var(--cfg-input-background, #252525);
+    color: var(--cfg-text-muted, #aaa);
+    border-bottom: 1px solid var(--cfg-border, #333);
+    font-size: 11px;
+    text-transform: uppercase;
+}
+
+.na-inner-table td {
+    padding: 4px 8px;
+    border-bottom: 1px solid var(--cfg-border, #2a2a2a);
+    color: var(--cfg-text, #ccc);
+}
+
+.na-inner-table tr:hover td {
+    background: var(--cfg-hover, #2f2f2f);
+}
+
+.na-detail .na-more {
+    font-size: 11px;
+    color: var(--cfg-text-muted, #888);
+    padding: 5px 0;
+}
+
+/* ==================== Connection Filters ==================== */
+
+.na-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 12px;
+    align-items: center;
+}
+
+.na-filters select,
+.na-filters input[type="text"] {
+    padding: 5px 10px;
+    border: 1px solid var(--cfg-border, #3c3c3c);
+    border-radius: 3px;
+    background: var(--cfg-input-background, #2b2b2b);
+    color: var(--cfg-text, #ccc);
+    font-size: 13px;
+}
+
+.na-filters input[type="text"] {
+    min-width: 220px;
+}
+
+.na-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 13px;
+    color: var(--cfg-text, #ccc);
+    cursor: pointer;
+}
+
+/* ==================== State Badges ==================== */
+
+.na-state {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.na-state-established {
+    background: #1a472a;
+    color: #4caf50;
+}
+
+.na-state-listen {
+    background: #1a3a47;
+    color: #42a5f5;
+}
+
+.na-state-time_wait {
+    background: #47431a;
+    color: #c0ca33;
+}
+
+.na-state-close_wait {
+    background: #472a1a;
+    color: #ef6c00;
+}
+
+.na-state-syn_sent,
+.na-state-syn_recv {
+    background: #3a1a47;
+    color: #ab47bc;
+}
+
+.na-state-fin_wait1,
+.na-state-fin_wait2 {
+    background: #471a2a;
+    color: #e57373;
+}
+
+.na-state-close,
+.na-state-closing,
+.na-state-last_ack {
+    background: #333;
+    color: #999;
+}
