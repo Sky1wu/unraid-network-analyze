@@ -16,12 +16,12 @@ $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: '/usr/local/emhttp';
   <!-- Toolbar -->
   <div class="na-toolbar">
     <div class="na-tabs">
-      <button class="na-tab active" data-tab="processes">Processes</button>
-      <button class="na-tab" data-tab="connections">Connections</button>
+      <button class="na-tab active" data-tab="processes">进程</button>
+      <button class="na-tab" data-tab="connections">连接</button>
     </div>
     <div class="na-controls">
-      <span class="na-status" id="na-status">Live &middot; 2s</span>
-      <button id="na-pause" class="na-btn" title="Pause/Resume">Pause</button>
+      <span class="na-status" id="na-status">实时 · 2秒</span>
+      <button id="na-pause" class="na-btn" title="暂停/恢复">暂停</button>
     </div>
   </div>
 
@@ -30,13 +30,13 @@ $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: '/usr/local/emhttp';
     <table class="na-table" id="process-table">
       <thead>
         <tr>
-          <th data-col="comm" class="sortable">Process</th>
+          <th data-col="comm" class="sortable">进程</th>
           <th data-col="pid" class="sortable">PID</th>
-          <th data-col="ns_label" class="sortable">Namespace</th>
-          <th data-col="socket_count" class="sortable">Sockets</th>
-          <th data-col="io_rx_rate" class="sortable" title="进程读取速率（含磁盘读取 + 网络接收，无法单独区分）">Read I/O Rate</th>
-          <th data-col="io_tx_rate" class="sortable" title="进程写入速率（含磁盘写入 + 网络发送，无法单独区分）">Write I/O Rate</th>
-          <th data-col="connections">Connections</th>
+          <th data-col="ns_label" class="sortable">命名空间</th>
+          <th data-col="socket_count" class="sortable">Socket 数</th>
+          <th data-col="io_rx_rate" class="sortable" title="进程读取速率（含磁盘读取 + 网络接收，无法单独区分）">读取 I/O 速率</th>
+          <th data-col="io_tx_rate" class="sortable" title="进程写入速率（含磁盘写入 + 网络发送，无法单独区分）">写入 I/O 速率</th>
+          <th data-col="connections">连接数</th>
         </tr>
       </thead>
       <tbody></tbody>
@@ -48,34 +48,34 @@ $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: '/usr/local/emhttp';
   <div class="na-panel" id="panel-connections">
     <div class="na-filters">
       <select id="filter-protocol">
-        <option value="all">All Protocols</option>
+        <option value="all">全部协议</option>
         <option value="tcp">TCP</option>
         <option value="tcp6">TCP6</option>
         <option value="udp">UDP</option>
         <option value="udp6">UDP6</option>
       </select>
       <select id="filter-state">
-        <option value="all">All States</option>
+        <option value="all">全部状态</option>
         <option value="ESTABLISHED">ESTABLISHED</option>
         <option value="LISTEN">LISTEN</option>
         <option value="TIME_WAIT">TIME_WAIT</option>
         <option value="CLOSE_WAIT">CLOSE_WAIT</option>
         <option value="SYN_SENT">SYN_SENT</option>
       </select>
-      <input type="text" id="filter-search" placeholder="Search IP, port, process...">
+      <input type="text" id="filter-search" placeholder="搜索 IP、端口、进程...">
       <label class="na-checkbox">
-        <input type="checkbox" id="filter-hide-timewait"> Hide TIME_WAIT
+        <input type="checkbox" id="filter-hide-timewait"> 隐藏 TIME_WAIT
       </label>
     </div>
     <table class="na-table" id="connection-table">
       <thead>
         <tr>
-          <th data-col="process" class="sortable">Process</th>
+          <th data-col="process" class="sortable">进程</th>
           <th data-col="pid" class="sortable">PID</th>
-          <th data-col="protocol" class="sortable">Protocol</th>
-          <th data-col="local_addr" class="sortable">Local Address</th>
-          <th data-col="remote_addr" class="sortable">Remote Address</th>
-          <th data-col="state" class="sortable">State</th>
+          <th data-col="protocol" class="sortable">协议</th>
+          <th data-col="local_addr" class="sortable">本地地址</th>
+          <th data-col="remote_addr" class="sortable">远程地址</th>
+          <th data-col="state" class="sortable">状态</th>
         </tr>
       </thead>
       <tbody></tbody>

@@ -102,8 +102,8 @@ var NetworkAnalyze = (function ($) {
 
     function togglePause() {
         paused = !paused;
-        $('#na-pause').text(paused ? 'Resume' : 'Pause');
-        $('#na-status').html(paused ? '<span class="na-paused">Paused</span>' : 'Live &middot; 2s');
+        $('#na-pause').text(paused ? '恢复' : '暂停');
+        $('#na-status').html(paused ? '<span class="na-paused">已暂停</span>' : '实时 · 2秒');
     }
 
     // --- Sorting ---
@@ -165,7 +165,7 @@ var NetworkAnalyze = (function ($) {
 
             if (isExpanded && p.connections && p.connections.length > 0) {
                 html += '<tr class="na-detail-row"><td colspan="7">';
-                html += '<table class="na-inner-table"><thead><tr><th>Proto</th><th>Local</th><th>Remote</th><th>State</th></tr></thead><tbody>';
+                html += '<table class="na-inner-table"><thead><tr><th>协议</th><th>本地</th><th>远程</th><th>状态</th></tr></thead><tbody>';
                 for (var j = 0; j < p.connections.length; j++) {
                     var c = p.connections[j];
                     html += '<tr>';
@@ -177,18 +177,18 @@ var NetworkAnalyze = (function ($) {
                 }
                 html += '</tbody></table>';
                 if (p.connections.length >= 20) {
-                    html += '<div class="na-more">Showing first 20 connections. Switch to Connections tab for full list.</div>';
+                    html += '<div class="na-more">显示前 20 个连接，切换到「连接」标签查看完整列表。</div>';
                 }
                 html += '</td></tr>';
             }
         }
 
         if (rows.length === 0) {
-            html = '<tr><td colspan="7" class="na-empty">No processes with network activity found</td></tr>';
+            html = '<tr><td colspan="7" class="na-empty">未发现有网络活动的进程</td></tr>';
         }
 
         if (processData.length > MAX_PROCESS_ROWS) {
-            html += '<tr><td colspan="7" class="na-more">Showing top ' + MAX_PROCESS_ROWS + ' of ' + processData.length + ' processes (sorted by socket count)</td></tr>';
+            html += '<tr><td colspan="7" class="na-more">显示前 ' + MAX_PROCESS_ROWS + ' 个进程（共 ' + processData.length + ' 个，按 Socket 数排序）</td></tr>';
         }
 
         $tbody.html(html);
@@ -228,11 +228,11 @@ var NetworkAnalyze = (function ($) {
         }
 
         if (rows.length === 0) {
-            html = '<tr><td colspan="6" class="na-empty">No connections match the current filters</td></tr>';
+            html = '<tr><td colspan="6" class="na-empty">没有匹配当前过滤条件的连接</td></tr>';
         }
 
         if (filtered.length > MAX_CONN_ROWS) {
-            html += '<tr><td colspan="6" class="na-more">Showing ' + MAX_CONN_ROWS + ' of ' + filtered.length + ' connections</td></tr>';
+            html += '<tr><td colspan="6" class="na-more">显示前 ' + MAX_CONN_ROWS + ' 条连接（共 ' + filtered.length + ' 条）</td></tr>';
         }
 
         $tbody.html(html);
@@ -275,7 +275,7 @@ var NetworkAnalyze = (function ($) {
         }
 
         if (interfaces.length === 0) {
-            html = '<div class="na-iface-card na-iface-empty">No network interfaces detected</div>';
+            html = '<div class="na-iface-card na-iface-empty">未检测到网络接口</div>';
         }
 
         $bar.html(html);
