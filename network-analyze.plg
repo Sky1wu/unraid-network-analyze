@@ -43,6 +43,7 @@
     <INLINE>
       mkdir -p &plugin;
       mkdir -p &emhttp;/include &emhttp;/js &emhttp;/css &emhttp;/icons
+      mkdir -p &emhttp;/languages/zh_CN &emhttp;/languages/en_US
     </INLINE>
   </FILE>
 
@@ -56,6 +57,7 @@ Tag="network-analyze.png"
 ---
 <?php
 $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: '/usr/local/emhttp';
+parse_plugin('network-analyze');
 ?>
 &lt;link type="text/css" rel="stylesheet" href="/plugins/network-analyze/css/network-analyze.css"&gt;
 
@@ -67,18 +69,18 @@ $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: '/usr/local/emhttp';
   &lt;!-- Toolbar --&gt;
   &lt;div class="na-toolbar"&gt;
     &lt;div class="na-tabs"&gt;
-      &lt;button class="na-tab active" data-tab="processes"&gt;进程&lt;/button&gt;
-      &lt;button class="na-tab" data-tab="connections"&gt;连接&lt;/button&gt;
+      &lt;button class="na-tab active" data-tab="processes"&gt;_(Processes)_&lt;/button&gt;
+      &lt;button class="na-tab" data-tab="connections"&gt;_(Connections)_&lt;/button&gt;
     &lt;/div&gt;
     &lt;div class="na-controls"&gt;
-      &lt;span class="na-status" id="na-status"&gt;实时 · 2秒&lt;/span&gt;
-      &lt;button id="na-pause" class="na-btn" title="暂停/恢复"&gt;暂停&lt;/button&gt;
+      &lt;span class="na-status" id="na-status"&gt;_(Live · 2s)_&lt;/span&gt;
+      &lt;button id="na-pause" class="na-btn" title="&lt;?=_('Pause / Resume')?&gt;"&gt;_(Pause)_&lt;/button&gt;
     &lt;/div&gt;
   &lt;/div&gt;
 
   &lt;!-- Namespace Filter Bar --&gt;
   &lt;div class="na-ns-filter-bar" id="na-ns-filter-bar"&gt;
-    &lt;span class="na-ns-filter-label"&gt;命名空间：&lt;/span&gt;
+    &lt;span class="na-ns-filter-label"&gt;_(Namespace:)_&lt;/span&gt;
     &lt;div id="na-ns-filters" class="na-ns-filter-list"&gt;&lt;/div&gt;
   &lt;/div&gt;
 
@@ -87,13 +89,13 @@ $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: '/usr/local/emhttp';
     &lt;table class="na-table" id="process-table"&gt;
       &lt;thead&gt;
         &lt;tr&gt;
-          &lt;th data-col="comm" class="sortable"&gt;进程&lt;/th&gt;
+          &lt;th data-col="comm" class="sortable"&gt;_(Process)_&lt;/th&gt;
           &lt;th data-col="pid" class="sortable"&gt;PID&lt;/th&gt;
-          &lt;th data-col="ns_label" class="sortable"&gt;命名空间&lt;/th&gt;
-          &lt;th data-col="socket_count" class="sortable"&gt;Socket 数&lt;/th&gt;
-          &lt;th data-col="io_rx_rate" class="sortable"&gt;读取 I/O 速率&lt;/th&gt;
-          &lt;th data-col="io_tx_rate" class="sortable"&gt;写入 I/O 速率&lt;/th&gt;
-          &lt;th data-col="connections"&gt;连接数&lt;/th&gt;
+          &lt;th data-col="ns_label" class="sortable"&gt;_(Namespace)_&lt;/th&gt;
+          &lt;th data-col="socket_count" class="sortable"&gt;_(Socket Count)_&lt;/th&gt;
+          &lt;th data-col="io_rx_rate" class="sortable" title="&lt;?=_('Process read rate (includes disk reads + network receive, cannot isolate network-only)')?&gt;"&gt;_(Read I/O Rate)_&lt;/th&gt;
+          &lt;th data-col="io_tx_rate" class="sortable" title="&lt;?=_('Process write rate (includes disk writes + network send, cannot isolate network-only)')?&gt;"&gt;_(Write I/O Rate)_&lt;/th&gt;
+          &lt;th data-col="connections"&gt;_(Connections)_&lt;/th&gt;
         &lt;/tr&gt;
       &lt;/thead&gt;
       &lt;tbody&gt;&lt;/tbody&gt;
@@ -105,34 +107,34 @@ $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: '/usr/local/emhttp';
   &lt;div class="na-panel" id="panel-connections"&gt;
     &lt;div class="na-filters"&gt;
       &lt;select id="filter-protocol"&gt;
-        &lt;option value="all"&gt;全部协议&lt;/option&gt;
+        &lt;option value="all"&gt;_(All Protocols)_&lt;/option&gt;
         &lt;option value="tcp"&gt;TCP&lt;/option&gt;
         &lt;option value="tcp6"&gt;TCP6&lt;/option&gt;
         &lt;option value="udp"&gt;UDP&lt;/option&gt;
         &lt;option value="udp6"&gt;UDP6&lt;/option&gt;
       &lt;/select&gt;
       &lt;select id="filter-state"&gt;
-        &lt;option value="all"&gt;全部状态&lt;/option&gt;
+        &lt;option value="all"&gt;_(All States)_&lt;/option&gt;
         &lt;option value="ESTABLISHED"&gt;ESTABLISHED&lt;/option&gt;
         &lt;option value="LISTEN"&gt;LISTEN&lt;/option&gt;
         &lt;option value="TIME_WAIT"&gt;TIME_WAIT&lt;/option&gt;
         &lt;option value="CLOSE_WAIT"&gt;CLOSE_WAIT&lt;/option&gt;
         &lt;option value="SYN_SENT"&gt;SYN_SENT&lt;/option&gt;
       &lt;/select&gt;
-      &lt;input type="text" id="filter-search" placeholder="搜索 IP、端口、进程..."&gt;
+      &lt;input type="text" id="filter-search" placeholder="&lt;?=_('Search IP, port, process...')?&gt;"&gt;
       &lt;label class="na-checkbox"&gt;
-        &lt;input type="checkbox" id="filter-hide-timewait"&gt; 隐藏 TIME_WAIT
+        &lt;input type="checkbox" id="filter-hide-timewait"&gt; _(Hide TIME_WAIT)_
       &lt;/label&gt;
     &lt;/div&gt;
     &lt;table class="na-table" id="connection-table"&gt;
       &lt;thead&gt;
         &lt;tr&gt;
-          &lt;th data-col="process" class="sortable"&gt;进程&lt;/th&gt;
+          &lt;th data-col="process" class="sortable"&gt;_(Process)_&lt;/th&gt;
           &lt;th data-col="pid" class="sortable"&gt;PID&lt;/th&gt;
-          &lt;th data-col="protocol" class="sortable"&gt;协议&lt;/th&gt;
-          &lt;th data-col="local_addr" class="sortable"&gt;本地地址&lt;/th&gt;
-          &lt;th data-col="remote_addr" class="sortable"&gt;远程地址&lt;/th&gt;
-          &lt;th data-col="state" class="sortable"&gt;状态&lt;/th&gt;
+          &lt;th data-col="protocol" class="sortable"&gt;_(Protocol)_&lt;/th&gt;
+          &lt;th data-col="local_addr" class="sortable"&gt;_(Local Address)_&lt;/th&gt;
+          &lt;th data-col="remote_addr" class="sortable"&gt;_(Remote Address)_&lt;/th&gt;
+          &lt;th data-col="state" class="sortable"&gt;_(State)_&lt;/th&gt;
         &lt;/tr&gt;
       &lt;/thead&gt;
       &lt;tbody&gt;&lt;/tbody&gt;
@@ -167,6 +169,15 @@ $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: '/usr/local/emhttp';
     <URL>&gitURL;/source/usr/local/emhttp/plugins/network-analyze/css/network-analyze.css</URL>
   </FILE>
 
+  <!-- Install translations -->
+  <FILE Name="&emhttp;/languages/zh_CN/network-analyze.txt">
+    <URL>&gitURL;/source/usr/local/emhttp/languages/zh_CN/network-analyze.txt</URL>
+  </FILE>
+
+  <FILE Name="&emhttp;/languages/en_US/network-analyze.txt">
+    <URL>&gitURL;/source/usr/local/emhttp/languages/en_US/network-analyze.txt</URL>
+  </FILE>
+
   <!-- Install description -->
   <FILE Name="&emhttp;/README.md">
     <INLINE>
@@ -185,6 +196,8 @@ $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: '/usr/local/emhttp';
       chmod 644 &emhttp;/NetworkAnalyze.page
       chmod 644 &emhttp;/js/network-analyze.js
       chmod 644 &emhttp;/css/network-analyze.css
+      chmod 644 &emhttp;/languages/zh_CN/network-analyze.txt
+      chmod 644 &emhttp;/languages/en_US/network-analyze.txt
       chmod 644 &emhttp;/README.md
     </INLINE>
   </FILE>

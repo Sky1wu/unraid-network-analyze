@@ -5,6 +5,7 @@ Tag="network-analyze.png"
 ---
 <?php
 $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: '/usr/local/emhttp';
+parse_plugin('network-analyze');
 ?>
 <link type="text/css" rel="stylesheet" href="/plugins/network-analyze/css/network-analyze.css">
 
@@ -16,18 +17,18 @@ $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: '/usr/local/emhttp';
   <!-- Toolbar -->
   <div class="na-toolbar">
     <div class="na-tabs">
-      <button class="na-tab active" data-tab="processes">进程</button>
-      <button class="na-tab" data-tab="connections">连接</button>
+      <button class="na-tab active" data-tab="processes">_(Processes)_</button>
+      <button class="na-tab" data-tab="connections">_(Connections)_</button>
     </div>
     <div class="na-controls">
-      <span class="na-status" id="na-status">实时 · 2秒</span>
-      <button id="na-pause" class="na-btn" title="暂停/恢复">暂停</button>
+      <span class="na-status" id="na-status">_(Live · 2s)_</span>
+      <button id="na-pause" class="na-btn" title="<?=_('Pause / Resume')?>">_(Pause)_</button>
     </div>
   </div>
 
   <!-- Namespace Filter Bar -->
   <div class="na-ns-filter-bar" id="na-ns-filter-bar">
-    <span class="na-ns-filter-label">命名空间：</span>
+    <span class="na-ns-filter-label">_(Namespace:)_</span>
     <div id="na-ns-filters" class="na-ns-filter-list"></div>
   </div>
 
@@ -36,13 +37,13 @@ $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: '/usr/local/emhttp';
     <table class="na-table" id="process-table">
       <thead>
         <tr>
-          <th data-col="comm" class="sortable">进程</th>
+          <th data-col="comm" class="sortable">_(Process)_</th>
           <th data-col="pid" class="sortable">PID</th>
-          <th data-col="ns_label" class="sortable">命名空间</th>
-          <th data-col="socket_count" class="sortable">Socket 数</th>
-          <th data-col="io_rx_rate" class="sortable" title="进程读取速率（含磁盘读取 + 网络接收，无法单独区分）">读取 I/O 速率</th>
-          <th data-col="io_tx_rate" class="sortable" title="进程写入速率（含磁盘写入 + 网络发送，无法单独区分）">写入 I/O 速率</th>
-          <th data-col="connections">连接数</th>
+          <th data-col="ns_label" class="sortable">_(Namespace)_</th>
+          <th data-col="socket_count" class="sortable">_(Socket Count)_</th>
+          <th data-col="io_rx_rate" class="sortable" title="<?=_('Process read rate (includes disk reads + network receive, cannot isolate network-only)')?>">_(Read I/O Rate)_</th>
+          <th data-col="io_tx_rate" class="sortable" title="<?=_('Process write rate (includes disk writes + network send, cannot isolate network-only)')?>">_(Write I/O Rate)_</th>
+          <th data-col="connections">_(Connections)_</th>
         </tr>
       </thead>
       <tbody></tbody>
@@ -54,34 +55,34 @@ $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: '/usr/local/emhttp';
   <div class="na-panel" id="panel-connections">
     <div class="na-filters">
       <select id="filter-protocol">
-        <option value="all">全部协议</option>
+        <option value="all">_(All Protocols)_</option>
         <option value="tcp">TCP</option>
         <option value="tcp6">TCP6</option>
         <option value="udp">UDP</option>
         <option value="udp6">UDP6</option>
       </select>
       <select id="filter-state">
-        <option value="all">全部状态</option>
+        <option value="all">_(All States)_</option>
         <option value="ESTABLISHED">ESTABLISHED</option>
         <option value="LISTEN">LISTEN</option>
         <option value="TIME_WAIT">TIME_WAIT</option>
         <option value="CLOSE_WAIT">CLOSE_WAIT</option>
         <option value="SYN_SENT">SYN_SENT</option>
       </select>
-      <input type="text" id="filter-search" placeholder="搜索 IP、端口、进程...">
+      <input type="text" id="filter-search" placeholder="<?=_('Search IP, port, process...')?>">
       <label class="na-checkbox">
-        <input type="checkbox" id="filter-hide-timewait"> 隐藏 TIME_WAIT
+        <input type="checkbox" id="filter-hide-timewait"> _(Hide TIME_WAIT)_
       </label>
     </div>
     <table class="na-table" id="connection-table">
       <thead>
         <tr>
-          <th data-col="process" class="sortable">进程</th>
+          <th data-col="process" class="sortable">_(Process)_</th>
           <th data-col="pid" class="sortable">PID</th>
-          <th data-col="protocol" class="sortable">协议</th>
-          <th data-col="local_addr" class="sortable">本地地址</th>
-          <th data-col="remote_addr" class="sortable">远程地址</th>
-          <th data-col="state" class="sortable">状态</th>
+          <th data-col="protocol" class="sortable">_(Protocol)_</th>
+          <th data-col="local_addr" class="sortable">_(Local Address)_</th>
+          <th data-col="remote_addr" class="sortable">_(Remote Address)_</th>
+          <th data-col="state" class="sortable">_(State)_</th>
         </tr>
       </thead>
       <tbody></tbody>
