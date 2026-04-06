@@ -13,7 +13,7 @@
     gap: 10px;
     margin-bottom: 15px;
     padding: 10px;
-    background: var(--cfg-background, #1c1c1c);
+    background: var(--cfg-background, #f5f5f5);
     border-radius: 4px;
 }
 
@@ -22,20 +22,20 @@
     align-items: center;
     gap: 12px;
     padding: 8px 14px;
-    background: var(--cfg-input-background, #2b2b2b);
-    border: 1px solid var(--cfg-border, #3c3c3c);
+    background: var(--cfg-input-background, #fff);
+    border: 1px solid var(--cfg-border, #ccc);
     border-radius: 4px;
     font-size: 13px;
 }
 
 .na-iface-name {
     font-weight: bold;
-    color: var(--cfg-text, #e0e0e0);
+    color: var(--cfg-text, #333);
     min-width: 60px;
 }
 
 .na-iface-stat {
-    color: var(--cfg-text, #e8e8e8);
+    color: var(--cfg-text, #333);
     white-space: nowrap;
 }
 
@@ -60,7 +60,7 @@
     align-items: center;
     margin-bottom: 12px;
     padding-bottom: 8px;
-    border-bottom: 1px solid var(--cfg-border, #3c3c3c);
+    border-bottom: 1px solid var(--cfg-border, #ccc);
 }
 
 .na-tabs {
@@ -70,23 +70,23 @@
 
 .na-tab {
     padding: 6px 18px;
-    border: 1px solid var(--cfg-border, #3c3c3c);
+    border: 1px solid var(--cfg-border, #ccc);
     border-bottom: none;
     border-radius: 4px 4px 0 0;
-    background: var(--cfg-input-background, #2b2b2b);
-    color: var(--cfg-text, #e8e8e8);
+    background: var(--cfg-input-background, #e8e8e8);
+    color: var(--cfg-text, #333);
     cursor: pointer;
     font-size: 13px;
     transition: background 0.15s;
 }
 
 .na-tab:hover {
-    background: var(--cfg-hover, #383838);
+    background: var(--cfg-hover, #ddd);
 }
 
 .na-tab.active {
-    background: var(--cfg-background, #1c1c1c);
-    color: var(--cfg-text, #e0e0e0);
+    background: var(--cfg-background, #f0f0f0);
+    color: var(--cfg-text, #333);
     font-weight: bold;
     border-bottom: 2px solid #e25200;
 }
@@ -109,16 +109,16 @@
 
 .na-btn {
     padding: 4px 12px;
-    border: 1px solid var(--cfg-border, #3c3c3c);
+    border: 1px solid var(--cfg-border, #ccc);
     border-radius: 3px;
-    background: var(--cfg-input-background, #2b2b2b);
-    color: var(--cfg-text, #e8e8e8);
+    background: var(--cfg-input-background, #f5f5f5);
+    color: var(--cfg-text, #333);
     cursor: pointer;
     font-size: 12px;
 }
 
 .na-btn:hover {
-    background: var(--cfg-hover, #383838);
+    background: var(--cfg-hover, #ddd);
 }
 
 /* ==================== Panels ==================== */
@@ -142,9 +142,9 @@
 .na-table th {
     padding: 8px 10px;
     text-align: left;
-    background: var(--cfg-input-background, #2b2b2b);
-    color: var(--cfg-text, #e0e0e0);
-    border-bottom: 2px solid var(--cfg-border, #3c3c3c);
+    background: var(--cfg-input-background, #e8e8e8);
+    color: var(--cfg-text, #333);
+    border-bottom: 2px solid var(--cfg-border, #ccc);
     font-weight: bold;
     white-space: nowrap;
     user-select: none;
@@ -155,7 +155,7 @@
 }
 
 .na-table th.sortable:hover {
-    background: var(--cfg-hover, #383838);
+    background: var(--cfg-hover, #ddd);
 }
 
 .na-table th.sort-asc::after {
@@ -170,12 +170,12 @@
 
 .na-table td {
     padding: 6px 10px;
-    border-bottom: 1px solid var(--cfg-border, #333);
-    color: var(--cfg-text, #e8e8e8);
+    border-bottom: 1px solid var(--cfg-border, #ddd);
+    color: var(--cfg-text, #333);
 }
 
 .na-table tbody tr:hover {
-    background: var(--cfg-hover, #2a2a2a);
+    background: var(--cfg-hover, #f5f5f5);
 }
 
 .na-table .na-empty {
@@ -199,7 +199,7 @@
 }
 
 .na-proc-row.expanded {
-    background: var(--cfg-hover, #333);
+    background: var(--cfg-hover, #eee);
 }
 
 .na-proc-name {
@@ -215,8 +215,8 @@
     padding: 2px 6px;
     border-radius: 3px;
     font-size: 11px;
-    background: var(--cfg-input-background, #333);
-    border: 1px solid var(--cfg-border, #444);
+    background: var(--cfg-input-background, #e8e8e8);
+    border: 1px solid var(--cfg-border, #ccc);
 }
 
 .na-expand-hint {
@@ -239,21 +239,21 @@
 .na-inner-table th {
     padding: 5px 8px;
     text-align: left;
-    background: var(--cfg-input-background, #252525);
-    color: var(--cfg-text-muted, #aaa);
-    border-bottom: 1px solid var(--cfg-border, #333);
+    background: var(--cfg-input-background, #e8e8e8);
+    color: var(--cfg-text-muted, #666);
+    border-bottom: 1px solid var(--cfg-border, #ddd);
     font-size: 11px;
     text-transform: uppercase;
 }
 
 .na-inner-table td {
     padding: 4px 8px;
-    border-bottom: 1px solid var(--cfg-border, #2a2a2a);
-    color: var(--cfg-text, #e8e8e8);
+    border-bottom: 1px solid var(--cfg-border, #eee);
+    color: var(--cfg-text, #333);
 }
 
 .na-inner-table tr:hover td {
-    background: var(--cfg-hover, #2f2f2f);
+    background: var(--cfg-hover, #f0f0f0);
 }
 
 .na-detail .na-more {
@@ -275,10 +275,10 @@
 .na-filters select,
 .na-filters input[type="text"] {
     padding: 5px 10px;
-    border: 1px solid var(--cfg-border, #3c3c3c);
+    border: 1px solid var(--cfg-border, #ccc);
     border-radius: 3px;
-    background: var(--cfg-input-background, #2b2b2b);
-    color: var(--cfg-text, #e8e8e8);
+    background: var(--cfg-input-background, #fff);
+    color: var(--cfg-text, #333);
     font-size: 13px;
 }
 
@@ -291,7 +291,7 @@
     align-items: center;
     gap: 5px;
     font-size: 13px;
-    color: var(--cfg-text, #e8e8e8);
+    color: var(--cfg-text, #333);
     cursor: pointer;
 }
 
