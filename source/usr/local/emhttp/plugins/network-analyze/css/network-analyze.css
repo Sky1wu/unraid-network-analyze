@@ -32,12 +32,12 @@
 
 .na-iface-name {
     font-weight: bold;
-    color: var(--cfg-text, #e0e0e0);
+    color: var(--cfg-text, #d0d0d0);
     min-width: 60px;
 }
 
 .na-iface-stat {
-    color: var(--cfg-text, #ccc);
+    color: var(--cfg-text, #b0b0b0);
     white-space: nowrap;
 }
 
@@ -76,7 +76,7 @@
     border-bottom: none;
     border-radius: 4px 4px 0 0;
     background: var(--cfg-input-background, #2b2b2b);
-    color: var(--cfg-text, #ccc);
+    color: var(--cfg-text, #b0b0b0);
     cursor: pointer;
     font-size: 13px;
     transition: background 0.15s;
@@ -88,7 +88,7 @@
 
 .na-tab.active {
     background: var(--cfg-background, #1c1c1c);
-    color: var(--cfg-text, #e0e0e0);
+    color: var(--cfg-text, #d0d0d0);
     font-weight: bold;
     border-bottom: 2px solid #e25200;
 }
@@ -114,7 +114,7 @@
     border: 1px solid var(--cfg-border, #3c3c3c);
     border-radius: 3px;
     background: var(--cfg-input-background, #2b2b2b);
-    color: var(--cfg-text, #ccc);
+    color: var(--cfg-text, #b0b0b0);
     cursor: pointer;
     font-size: 12px;
 }
@@ -145,7 +145,7 @@
     padding: 8px 10px;
     text-align: left;
     background: var(--cfg-input-background, #2b2b2b);
-    color: var(--cfg-text, #e0e0e0);
+    color: var(--cfg-text, #d0d0d0);
     border-bottom: 2px solid var(--cfg-border, #3c3c3c);
     font-weight: bold;
     white-space: nowrap;
@@ -173,7 +173,7 @@
 .na-table td {
     padding: 6px 10px;
     border-bottom: 1px solid var(--cfg-border, #333);
-    color: var(--cfg-text, #ccc);
+    color: var(--cfg-text, #b0b0b0);
 }
 
 .na-table tbody tr:hover {
@@ -251,7 +251,7 @@
 .na-inner-table td {
     padding: 4px 8px;
     border-bottom: 1px solid var(--cfg-border, #2a2a2a);
-    color: var(--cfg-text, #ccc);
+    color: var(--cfg-text, #b0b0b0);
 }
 
 .na-inner-table tr:hover td {
@@ -280,7 +280,7 @@
     border: 1px solid var(--cfg-border, #3c3c3c);
     border-radius: 3px;
     background: var(--cfg-input-background, #2b2b2b);
-    color: var(--cfg-text, #ccc);
+    color: var(--cfg-text, #b0b0b0);
     font-size: 13px;
 }
 
@@ -293,7 +293,7 @@
     align-items: center;
     gap: 5px;
     font-size: 13px;
-    color: var(--cfg-text, #ccc);
+    color: var(--cfg-text, #b0b0b0);
     cursor: pointer;
 }
 
