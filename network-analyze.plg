@@ -167,6 +167,11 @@ $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: '/usr/local/emhttp';
     <URL>&gitURL;/source/usr/local/emhttp/plugins/network-analyze/css/network-analyze.css</URL>
   </FILE>
 
+  <!-- Install description -->
+  <FILE Name="&emhttp;/README.md">
+    <URL>&gitURL;/source/usr/local/emhttp/plugins/network-analyze/README.md</URL>
+  </FILE>
+
   <!-- Set permissions -->
   <FILE Run="/bin/bash">
     <INLINE>
@@ -176,6 +181,7 @@ $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: '/usr/local/emhttp';
       chmod 644 &emhttp;/NetworkAnalyze.page
       chmod 644 &emhttp;/js/network-analyze.js
       chmod 644 &emhttp;/css/network-analyze.css
+      chmod 644 &emhttp;/README.md
     </INLINE>
   </FILE>
 
