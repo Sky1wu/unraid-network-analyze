@@ -34,8 +34,8 @@ $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: '/usr/local/emhttp';
           <th data-col="pid" class="sortable">PID</th>
           <th data-col="ns_label" class="sortable">Namespace</th>
           <th data-col="socket_count" class="sortable">Sockets</th>
-          <th data-col="io_rx_rate" class="sortable">I/O RX Rate</th>
-          <th data-col="io_tx_rate" class="sortable">I/O TX Rate</th>
+          <th data-col="io_rx_rate" class="sortable" title="进程读取速率（含磁盘读取 + 网络接收，无法单独区分）">Read I/O Rate</th>
+          <th data-col="io_tx_rate" class="sortable" title="进程写入速率（含磁盘写入 + 网络发送，无法单独区分）">Write I/O Rate</th>
           <th data-col="connections">Connections</th>
         </tr>
       </thead>
