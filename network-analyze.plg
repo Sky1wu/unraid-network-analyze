@@ -169,7 +169,11 @@ $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: '/usr/local/emhttp';
 
   <!-- Install description -->
   <FILE Name="&emhttp;/README.md">
-    <URL>&gitURL;/source/usr/local/emhttp/plugins/network-analyze/README.md</URL>
+    <INLINE>
+**Network Analyze**
+
+实时网络监控插件——查看哪个进程在占用网络、当前有哪些网络连接。进程 I/O 速率、TCP/UDP 连接追踪、网卡实时速率、Docker 容器识别、命名空间过滤。基于 /proc 文件系统，无需安装额外软件。
+    </INLINE>
   </FILE>
 
   <!-- Set permissions -->
