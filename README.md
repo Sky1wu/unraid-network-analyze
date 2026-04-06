@@ -2,8 +2,6 @@
 
 Unraid web 插件，实时监控网络状况——查看哪个进程在占用网络、当前有哪些网络连接。
 
-![screenshot](https://raw.githubusercontent.com/Sky1wu/unraid-network-analyze/master/.github/screenshot.png)
-
 ## 功能
 
 - **进程监控** — 显示每个进程的 socket 数量和 I/O 速率，点击展开查看详细连接列表
