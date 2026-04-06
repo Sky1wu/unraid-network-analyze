@@ -22,7 +22,7 @@ parse_plugin('network-analyze');
     </div>
     <div class="na-controls">
       <span class="na-status" id="na-status">_(Live · 2s)_</span>
-      <button id="na-pause" class="na-btn" title="<?=_('Pause / Resume')?>">_(Pause)_</button>
+      <button id="na-pause" class="na-btn" title="_(Pause / Resume)_">_(Pause)_</button>
     </div>
   </div>
 
@@ -41,8 +41,8 @@ parse_plugin('network-analyze');
           <th data-col="pid" class="sortable">PID</th>
           <th data-col="ns_label" class="sortable">_(Namespace)_</th>
           <th data-col="socket_count" class="sortable">_(Socket Count)_</th>
-          <th data-col="io_rx_rate" class="sortable" title="<?=_('Process read rate (includes disk reads + network receive, cannot isolate network-only)')?>">_(Read I/O Rate)_</th>
-          <th data-col="io_tx_rate" class="sortable" title="<?=_('Process write rate (includes disk writes + network send, cannot isolate network-only)')?>">_(Write I/O Rate)_</th>
+          <th data-col="io_rx_rate" class="sortable" title="_(Process read rate (includes disk reads + network receive, cannot isolate network-only))_">_(Read I/O Rate)_</th>
+          <th data-col="io_tx_rate" class="sortable" title="_(Process write rate (includes disk writes + network send, cannot isolate network-only))_">_(Write I/O Rate)_</th>
           <th data-col="connections">_(Connections)_</th>
         </tr>
       </thead>
@@ -69,7 +69,7 @@ parse_plugin('network-analyze');
         <option value="CLOSE_WAIT">CLOSE_WAIT</option>
         <option value="SYN_SENT">SYN_SENT</option>
       </select>
-      <input type="text" id="filter-search" placeholder="<?=_('Search IP, port, process...')?>">
+      <input type="text" id="filter-search" placeholder="_(Search IP, port, process...)_">
       <label class="na-checkbox">
         <input type="checkbox" id="filter-hide-timewait"> _(Hide TIME_WAIT)_
       </label>
@@ -91,4 +91,23 @@ parse_plugin('network-analyze');
 
 </div>
 
+<script>
+var _NA_I18N = {
+  'Pause': '_(Pause)_',
+  'Resume': '_(Resume)_',
+  'Paused': '_(Paused)_',
+  'Live · 2s': '_(Live · 2s)_',
+  'Protocol': '_(Protocol)_',
+  'Local': '_(Local)_',
+  'Remote': '_(Remote)_',
+  'State': '_(State)_',
+  'Showing first 20 connections, switch to "Connections" tab for the full list.': '_(Showing first 20 connections, switch to "Connections" tab for the full list.)_',
+  'No processes with network activity found': '_(No processes with network activity found)_',
+  'Showing first {n} processes (of {total}, sorted by socket count)': '_(Showing first {n} processes (of {total}, sorted by socket count))_',
+  'No connections match current filters': '_(No connections match current filters)_',
+  'Showing first {n} connections (of {total})': '_(Showing first {n} connections (of {total}))_',
+  'No network interfaces detected': '_(No network interfaces detected)_'
+};
+function _(key) { return _NA_I18N[key] !== undefined ? _NA_I18N[key] : key; }
+</script>
 <script src="/plugins/network-analyze/js/network-analyze.js"></script>

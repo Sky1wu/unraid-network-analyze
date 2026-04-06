@@ -43,7 +43,7 @@
     <INLINE>
       mkdir -p &plugin;
       mkdir -p &emhttp;/include &emhttp;/js &emhttp;/css &emhttp;/icons
-      mkdir -p &emhttp;/languages/zh_CN &emhttp;/languages/en_US
+      mkdir -p /usr/local/emhttp/languages/zh_CN /usr/local/emhttp/languages/en_US
     </INLINE>
   </FILE>
 
@@ -74,7 +74,7 @@ parse_plugin('network-analyze');
     &lt;/div&gt;
     &lt;div class="na-controls"&gt;
       &lt;span class="na-status" id="na-status"&gt;_(Live · 2s)_&lt;/span&gt;
-      &lt;button id="na-pause" class="na-btn" title="&lt;?=_('Pause / Resume')?&gt;"&gt;_(Pause)_&lt;/button&gt;
+      &lt;button id="na-pause" class="na-btn" title="_(Pause / Resume)_"&gt;_(Pause)_&lt;/button&gt;
     &lt;/div&gt;
   &lt;/div&gt;
 
@@ -93,8 +93,8 @@ parse_plugin('network-analyze');
           &lt;th data-col="pid" class="sortable"&gt;PID&lt;/th&gt;
           &lt;th data-col="ns_label" class="sortable"&gt;_(Namespace)_&lt;/th&gt;
           &lt;th data-col="socket_count" class="sortable"&gt;_(Socket Count)_&lt;/th&gt;
-          &lt;th data-col="io_rx_rate" class="sortable" title="&lt;?=_('Process read rate (includes disk reads + network receive, cannot isolate network-only)')?&gt;"&gt;_(Read I/O Rate)_&lt;/th&gt;
-          &lt;th data-col="io_tx_rate" class="sortable" title="&lt;?=_('Process write rate (includes disk writes + network send, cannot isolate network-only)')?&gt;"&gt;_(Write I/O Rate)_&lt;/th&gt;
+          &lt;th data-col="io_rx_rate" class="sortable" title="_(Process read rate (includes disk reads + network receive, cannot isolate network-only))_"&gt;_(Read I/O Rate)_&lt;/th&gt;
+          &lt;th data-col="io_tx_rate" class="sortable" title="_(Process write rate (includes disk writes + network send, cannot isolate network-only))_"&gt;_(Write I/O Rate)_&lt;/th&gt;
           &lt;th data-col="connections"&gt;_(Connections)_&lt;/th&gt;
         &lt;/tr&gt;
       &lt;/thead&gt;
@@ -121,7 +121,7 @@ parse_plugin('network-analyze');
         &lt;option value="CLOSE_WAIT"&gt;CLOSE_WAIT&lt;/option&gt;
         &lt;option value="SYN_SENT"&gt;SYN_SENT&lt;/option&gt;
       &lt;/select&gt;
-      &lt;input type="text" id="filter-search" placeholder="&lt;?=_('Search IP, port, process...')?&gt;"&gt;
+      &lt;input type="text" id="filter-search" placeholder="_(Search IP, port, process...)_"&gt;
       &lt;label class="na-checkbox"&gt;
         &lt;input type="checkbox" id="filter-hide-timewait"&gt; _(Hide TIME_WAIT)_
       &lt;/label&gt;
@@ -143,6 +143,25 @@ parse_plugin('network-analyze');
 
 &lt;/div&gt;
 
+&lt;script&gt;
+var _NA_I18N = {
+  'Pause': '_(Pause)_',
+  'Resume': '_(Resume)_',
+  'Paused': '_(Paused)_',
+  'Live · 2s': '_(Live · 2s)_',
+  'Protocol': '_(Protocol)_',
+  'Local': '_(Local)_',
+  'Remote': '_(Remote)_',
+  'State': '_(State)_',
+  'Showing first 20 connections, switch to "Connections" tab for the full list.': '_(Showing first 20 connections, switch to "Connections" tab for the full list.)_',
+  'No processes with network activity found': '_(No processes with network activity found)_',
+  'Showing first {n} processes (of {total}, sorted by socket count)': '_(Showing first {n} processes (of {total}, sorted by socket count))_',
+  'No connections match current filters': '_(No connections match current filters)_',
+  'Showing first {n} connections (of {total})': '_(Showing first {n} connections (of {total}))_',
+  'No network interfaces detected': '_(No network interfaces detected)_'
+};
+function _(key) { return _NA_I18N[key] !== undefined ? _NA_I18N[key] : key; }
+&lt;/script&gt;
 &lt;script src="/plugins/network-analyze/js/network-analyze.js"&gt;&lt;/script&gt;
     </INLINE>
   </FILE>
@@ -170,11 +189,11 @@ parse_plugin('network-analyze');
   </FILE>
 
   <!-- Install translations -->
-  <FILE Name="&emhttp;/languages/zh_CN/network-analyze.txt">
+  <FILE Name="/usr/local/emhttp/languages/zh_CN/network-analyze.txt">
     <URL>&gitURL;/source/usr/local/emhttp/languages/zh_CN/network-analyze.txt</URL>
   </FILE>
 
-  <FILE Name="&emhttp;/languages/en_US/network-analyze.txt">
+  <FILE Name="/usr/local/emhttp/languages/en_US/network-analyze.txt">
     <URL>&gitURL;/source/usr/local/emhttp/languages/en_US/network-analyze.txt</URL>
   </FILE>
 
@@ -196,8 +215,8 @@ parse_plugin('network-analyze');
       chmod 644 &emhttp;/NetworkAnalyze.page
       chmod 644 &emhttp;/js/network-analyze.js
       chmod 644 &emhttp;/css/network-analyze.css
-      chmod 644 &emhttp;/languages/zh_CN/network-analyze.txt
-      chmod 644 &emhttp;/languages/en_US/network-analyze.txt
+      chmod 644 /usr/local/emhttp/languages/zh_CN/network-analyze.txt
+      chmod 644 /usr/local/emhttp/languages/en_US/network-analyze.txt
       chmod 644 &emhttp;/README.md
     </INLINE>
   </FILE>
