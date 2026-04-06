@@ -1,4 +1,6 @@
 /* Network Analyze - Unraid Plugin Styles */
+/* Fallback colors are dark-theme defaults; Unraid --cfg-* vars override them.
+   For light theme, Unraid sets these vars automatically. */
 
 /* ==================== Layout ==================== */
 
@@ -13,7 +15,7 @@
     gap: 10px;
     margin-bottom: 15px;
     padding: 10px;
-    background: var(--cfg-background);
+    background: var(--cfg-background, #1c1c1c);
     border-radius: 4px;
 }
 
@@ -22,25 +24,25 @@
     align-items: center;
     gap: 12px;
     padding: 8px 14px;
-    background: var(--cfg-input-background);
-    border: 1px solid var(--cfg-border);
+    background: var(--cfg-input-background, #2b2b2b);
+    border: 1px solid var(--cfg-border, #3c3c3c);
     border-radius: 4px;
     font-size: 13px;
 }
 
 .na-iface-name {
     font-weight: bold;
-    color: var(--cfg-text);
+    color: var(--cfg-text, #e0e0e0);
     min-width: 60px;
 }
 
 .na-iface-stat {
-    color: var(--cfg-text);
+    color: var(--cfg-text, #ccc);
     white-space: nowrap;
 }
 
 .na-iface-empty {
-    color: var(--cfg-text-muted);
+    color: var(--cfg-text-muted, #888);
     font-style: italic;
 }
 
@@ -60,7 +62,7 @@
     align-items: center;
     margin-bottom: 12px;
     padding-bottom: 8px;
-    border-bottom: 1px solid var(--cfg-border);
+    border-bottom: 1px solid var(--cfg-border, #3c3c3c);
 }
 
 .na-tabs {
@@ -70,23 +72,23 @@
 
 .na-tab {
     padding: 6px 18px;
-    border: 1px solid var(--cfg-border);
+    border: 1px solid var(--cfg-border, #3c3c3c);
     border-bottom: none;
     border-radius: 4px 4px 0 0;
-    background: var(--cfg-input-background);
-    color: var(--cfg-text);
+    background: var(--cfg-input-background, #2b2b2b);
+    color: var(--cfg-text, #ccc);
     cursor: pointer;
     font-size: 13px;
     transition: background 0.15s;
 }
 
 .na-tab:hover {
-    background: var(--cfg-hover);
+    background: var(--cfg-hover, #383838);
 }
 
 .na-tab.active {
-    background: var(--cfg-background);
-    color: var(--cfg-text);
+    background: var(--cfg-background, #1c1c1c);
+    color: var(--cfg-text, #e0e0e0);
     font-weight: bold;
     border-bottom: 2px solid #e25200;
 }
@@ -99,7 +101,7 @@
 
 .na-status {
     font-size: 12px;
-    color: var(--cfg-text-muted);
+    color: var(--cfg-text-muted, #888);
 }
 
 .na-paused {
@@ -109,16 +111,16 @@
 
 .na-btn {
     padding: 4px 12px;
-    border: 1px solid var(--cfg-border);
+    border: 1px solid var(--cfg-border, #3c3c3c);
     border-radius: 3px;
-    background: var(--cfg-input-background);
-    color: var(--cfg-text);
+    background: var(--cfg-input-background, #2b2b2b);
+    color: var(--cfg-text, #ccc);
     cursor: pointer;
     font-size: 12px;
 }
 
 .na-btn:hover {
-    background: var(--cfg-hover);
+    background: var(--cfg-hover, #383838);
 }
 
 /* ==================== Panels ==================== */
@@ -142,9 +144,9 @@
 .na-table th {
     padding: 8px 10px;
     text-align: left;
-    background: var(--cfg-input-background);
-    color: var(--cfg-text);
-    border-bottom: 2px solid var(--cfg-border);
+    background: var(--cfg-input-background, #2b2b2b);
+    color: var(--cfg-text, #e0e0e0);
+    border-bottom: 2px solid var(--cfg-border, #3c3c3c);
     font-weight: bold;
     white-space: nowrap;
     user-select: none;
@@ -155,7 +157,7 @@
 }
 
 .na-table th.sortable:hover {
-    background: var(--cfg-hover);
+    background: var(--cfg-hover, #383838);
 }
 
 .na-table th.sort-asc::after {
@@ -170,25 +172,25 @@
 
 .na-table td {
     padding: 6px 10px;
-    border-bottom: 1px solid var(--cfg-border);
-    color: var(--cfg-text);
+    border-bottom: 1px solid var(--cfg-border, #333);
+    color: var(--cfg-text, #ccc);
 }
 
 .na-table tbody tr:hover {
-    background: var(--cfg-hover);
+    background: var(--cfg-hover, #2a2a2a);
 }
 
 .na-table .na-empty {
     text-align: center;
     padding: 30px;
-    color: var(--cfg-text-muted);
+    color: var(--cfg-text-muted, #888);
     font-style: italic;
 }
 
 .na-table .na-more {
     text-align: center;
     padding: 8px;
-    color: var(--cfg-text-muted);
+    color: var(--cfg-text-muted, #888);
     font-size: 12px;
 }
 
@@ -199,7 +201,7 @@
 }
 
 .na-proc-row.expanded {
-    background: var(--cfg-hover);
+    background: var(--cfg-hover, #333);
 }
 
 .na-proc-name {
@@ -215,13 +217,13 @@
     padding: 2px 6px;
     border-radius: 3px;
     font-size: 11px;
-    background: var(--cfg-input-background);
-    border: 1px solid var(--cfg-border);
+    background: var(--cfg-input-background, #333);
+    border: 1px solid var(--cfg-border, #444);
 }
 
 .na-expand-hint {
     font-size: 10px;
-    color: var(--cfg-text-muted);
+    color: var(--cfg-text-muted, #888);
 }
 
 /* Inner detail table */
@@ -239,26 +241,26 @@
 .na-inner-table th {
     padding: 5px 8px;
     text-align: left;
-    background: var(--cfg-input-background);
-    color: var(--cfg-text-muted);
-    border-bottom: 1px solid var(--cfg-border);
+    background: var(--cfg-input-background, #252525);
+    color: var(--cfg-text-muted, #aaa);
+    border-bottom: 1px solid var(--cfg-border, #333);
     font-size: 11px;
     text-transform: uppercase;
 }
 
 .na-inner-table td {
     padding: 4px 8px;
-    border-bottom: 1px solid var(--cfg-border);
-    color: var(--cfg-text);
+    border-bottom: 1px solid var(--cfg-border, #2a2a2a);
+    color: var(--cfg-text, #ccc);
 }
 
 .na-inner-table tr:hover td {
-    background: var(--cfg-hover);
+    background: var(--cfg-hover, #2f2f2f);
 }
 
 .na-detail .na-more {
     font-size: 11px;
-    color: var(--cfg-text-muted);
+    color: var(--cfg-text-muted, #888);
     padding: 5px 0;
 }
 
@@ -275,10 +277,10 @@
 .na-filters select,
 .na-filters input[type="text"] {
     padding: 5px 10px;
-    border: 1px solid var(--cfg-border);
+    border: 1px solid var(--cfg-border, #3c3c3c);
     border-radius: 3px;
-    background: var(--cfg-input-background);
-    color: var(--cfg-text);
+    background: var(--cfg-input-background, #2b2b2b);
+    color: var(--cfg-text, #ccc);
     font-size: 13px;
 }
 
@@ -291,7 +293,7 @@
     align-items: center;
     gap: 5px;
     font-size: 13px;
-    color: var(--cfg-text);
+    color: var(--cfg-text, #ccc);
     cursor: pointer;
 }
 
