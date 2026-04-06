@@ -12,6 +12,16 @@
 <PLUGIN name="&name;" author="&author;" version="&version;"
         pluginURL="&pluginURL;" min="6.9.0">
 
+  <DESCRIPTION>
+  <![CDATA[
+  实时网络监控插件——查看哪个进程在占用网络、当前有哪些网络连接。
+  <br>
+  <b>功能：</b>进程 I/O 速率、TCP/UDP 连接追踪、网卡实时速率、Docker 容器识别、排序与过滤。
+  <br>
+  <b>无依赖：</b>基于 /proc 文件系统，无需安装额外软件。
+  ]]>
+  </DESCRIPTION>
+
   <CHANGES>
 ###2026.04.07
 - 中文界面支持
