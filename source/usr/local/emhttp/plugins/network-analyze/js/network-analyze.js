@@ -142,8 +142,8 @@ var NetworkAnalyze = (function ($) {
 
     function togglePause() {
         paused = !paused;
-        $('#na-pause').text(paused ? _('Resume') : _('Pause'));
-        $('#na-status').html(paused ? '<span class="na-paused">' + _('Paused') + '</span>' : _('Live · 2s'));
+        $('#na-pause').text(paused ? 'Resume' : 'Pause');
+        $('#na-status').html(paused ? '<span class="na-paused">Paused</span>' : 'Live &middot; 2s');
     }
 
     // --- Sorting ---
@@ -213,7 +213,7 @@ var NetworkAnalyze = (function ($) {
 
             if (isExpanded && p.connections && p.connections.length > 0) {
                 html += '<tr class="na-detail-row"><td colspan="7">';
-                html += '<table class="na-inner-table"><thead><tr><th>' + _('Protocol') + '</th><th>' + _('Local') + '</th><th>' + _('Remote') + '</th><th>' + _('State') + '</th></tr></thead><tbody>';
+                html += '<table class="na-inner-table"><thead><tr><th>Protocol</th><th>Local</th><th>Remote</th><th>State</th></tr></thead><tbody>';
                 for (var j = 0; j < p.connections.length; j++) {
                     var c = p.connections[j];
                     html += '<tr>';
@@ -225,18 +225,18 @@ var NetworkAnalyze = (function ($) {
                 }
                 html += '</tbody></table>';
                 if (p.connections.length >= 20) {
-                    html += '<div class="na-more">' + _('Showing first 20 connections, switch to "Connections" tab for the full list.') + '</div>';
+                    html += '<div class="na-more">Showing first 20 connections, switch to "Connections" tab for the full list.</div>';
                 }
                 html += '</td></tr>';
             }
         }
 
         if (rows.length === 0) {
-            html = '<tr><td colspan="7" class="na-empty">' + _('No processes with network activity found') + '</td></tr>';
+            html = '<tr><td colspan="7" class="na-empty">No processes with network activity found</td></tr>';
         }
 
         if (processData.length > MAX_PROCESS_ROWS) {
-            html += '<tr><td colspan="7" class="na-more">' + _('Showing first {n} processes (of {total}, sorted by socket count)').replace('{n}', MAX_PROCESS_ROWS).replace('{total}', processData.length) + '</td></tr>';
+            html += '<tr><td colspan="7" class="na-more">Showing first ' + MAX_PROCESS_ROWS + ' processes (of ' + processData.length + ', sorted by socket count)</td></tr>';
         }
 
         $tbody.html(html);
@@ -276,11 +276,11 @@ var NetworkAnalyze = (function ($) {
         }
 
         if (rows.length === 0) {
-            html = '<tr><td colspan="6" class="na-empty">' + _('No connections match current filters') + '</td></tr>';
+            html = '<tr><td colspan="6" class="na-empty">No connections match current filters</td></tr>';
         }
 
         if (filtered.length > MAX_CONN_ROWS) {
-            html += '<tr><td colspan="6" class="na-more">' + _('Showing first {n} connections (of {total})').replace('{n}', MAX_CONN_ROWS).replace('{total}', filtered.length) + '</td></tr>';
+            html += '<tr><td colspan="6" class="na-more">Showing first ' + MAX_CONN_ROWS + ' connections (of ' + filtered.length + ')</td></tr>';
         }
 
         $tbody.html(html);
@@ -324,7 +324,7 @@ var NetworkAnalyze = (function ($) {
         }
 
         if (interfaces.length === 0) {
-            html = '<div class="na-iface-card na-iface-empty">' + _('No network interfaces detected') + '</div>';
+            html = '<div class="na-iface-card na-iface-empty">No network interfaces detected</div>';
         }
 
         $bar.html(html);

@@ -14,18 +14,18 @@
 
   <DESCRIPTION>
   <![CDATA[
-  实时网络监控插件——查看哪个进程在占用网络、当前有哪些网络连接。
+  Real-time network monitoring plugin — see which processes are using the network and what connections are active.
   <br>
-  <b>功能：</b>进程 I/O 速率、TCP/UDP 连接追踪、网卡实时速率、Docker 容器识别、排序与过滤。
+  <b>Features:</b> process I/O rates, TCP/UDP connection tracking, NIC real-time rates, Docker container identification, sorting and filtering.
   <br>
-  <b>无依赖：</b>基于 /proc 文件系统，无需安装额外软件。
+  <b>Zero dependencies:</b> reads /proc filesystem directly, no additional software required.
   ]]>
   </DESCRIPTION>
 
   <CHANGES>
 ###2026.04.07
-- 中文界面支持
-- 命名空间过滤：按 Host/Docker 容器显示或隐藏进程和连接
+- Chinese interface support
+- Namespace filtering: show/hide processes and connections by Host/Docker container
 - Per-process network monitoring
 - Connection tracking with process mapping
 - Real-time 2-second polling
@@ -43,142 +43,12 @@
     <INLINE>
       mkdir -p &plugin;
       mkdir -p &emhttp;/include &emhttp;/js &emhttp;/css &emhttp;/icons
-      mkdir -p /usr/local/emhttp/languages/zh_CN /usr/local/emhttp/languages/en_US
     </INLINE>
   </FILE>
 
   <!-- Install page definition -->
   <FILE Name="&emhttp;/NetworkAnalyze.page">
-    <INLINE>
-Menu="Tasks:65"
-Type="xmenu"
-Title="Network Analyze"
-Tag="network-analyze.png"
----
-&lt;?php
-$docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: '/usr/local/emhttp';
-
-// Load plugin translations directly (_(...)_ template substitution happens before PHP, so parse_plugin() is too late)
-$_na_var = file_exists('/var/local/emhttp/var.ini') ? parse_ini_file('/var/local/emhttp/var.ini') : [];
-$_na_lang = $_na_var['LOCALE'] ?? 'en_US';
-$_na_translations = [];
-foreach (["/usr/local/emhttp/languages/{$_na_lang}/network-analyze.txt", '/usr/local/emhttp/languages/en_US/network-analyze.txt'] as $_na_f) {
-    if (file_exists($_na_f)) {
-        foreach (file($_na_f, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $_na_line) {
-            $pos = strpos($_na_line, '=');
-            if ($pos !== false) $_na_translations[substr($_na_line, 0, $pos)] = substr($_na_line, $pos + 1);
-        }
-        break;
-    }
-}
-function na_t($key) { global $_na_translations; return htmlspecialchars($_na_translations[$key] ?? $key, ENT_QUOTES, 'UTF-8'); }
-function na_js($key) { global $_na_translations; return json_encode($_na_translations[$key] ?? $key); }
-?&gt;
-&lt;link type="text/css" rel="stylesheet" href="/plugins/network-analyze/css/network-analyze.css"&gt;
-
-&lt;div class="network-analyze"&gt;
-
-  &lt;!-- Interface Summary Bar --&gt;
-  &lt;div class="na-iface-bar" id="na-iface-bar"&gt;&lt;/div&gt;
-
-  &lt;!-- Toolbar --&gt;
-  &lt;div class="na-toolbar"&gt;
-    &lt;div class="na-tabs"&gt;
-      &lt;button class="na-tab active" data-tab="processes"&gt;&lt;?= na_t('Processes') ?&gt;&lt;/button&gt;
-      &lt;button class="na-tab" data-tab="connections"&gt;&lt;?= na_t('Connections') ?&gt;&lt;/button&gt;
-    &lt;/div&gt;
-    &lt;div class="na-controls"&gt;
-      &lt;span class="na-status" id="na-status"&gt;&lt;?= na_t('Live · 2s') ?&gt;&lt;/span&gt;
-      &lt;button id="na-pause" class="na-btn" title="&lt;?= na_t('Pause / Resume') ?&gt;"&gt;&lt;?= na_t('Pause') ?&gt;&lt;/button&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
-
-  &lt;!-- Namespace Filter Bar --&gt;
-  &lt;div class="na-ns-filter-bar" id="na-ns-filter-bar"&gt;
-    &lt;span class="na-ns-filter-label"&gt;&lt;?= na_t('Namespace:') ?&gt;&lt;/span&gt;
-    &lt;div id="na-ns-filters" class="na-ns-filter-list"&gt;&lt;/div&gt;
-  &lt;/div&gt;
-
-  &lt;!-- Processes Tab --&gt;
-  &lt;div class="na-panel active" id="panel-processes"&gt;
-    &lt;table class="na-table" id="process-table"&gt;
-      &lt;thead&gt;
-        &lt;tr&gt;
-          &lt;th data-col="comm" class="sortable"&gt;&lt;?= na_t('Process') ?&gt;&lt;/th&gt;
-          &lt;th data-col="pid" class="sortable"&gt;PID&lt;/th&gt;
-          &lt;th data-col="ns_label" class="sortable"&gt;&lt;?= na_t('Namespace') ?&gt;&lt;/th&gt;
-          &lt;th data-col="socket_count" class="sortable"&gt;&lt;?= na_t('Socket Count') ?&gt;&lt;/th&gt;
-          &lt;th data-col="io_rx_rate" class="sortable" title="&lt;?= na_t('Process read rate (includes disk reads + network receive, cannot isolate network-only)') ?&gt;"&gt;&lt;?= na_t('Read I/O Rate') ?&gt;&lt;/th&gt;
-          &lt;th data-col="io_tx_rate" class="sortable" title="&lt;?= na_t('Process write rate (includes disk writes + network send, cannot isolate network-only)') ?&gt;"&gt;&lt;?= na_t('Write I/O Rate') ?&gt;&lt;/th&gt;
-          &lt;th data-col="connections"&gt;&lt;?= na_t('Connections') ?&gt;&lt;/th&gt;
-        &lt;/tr&gt;
-      &lt;/thead&gt;
-      &lt;tbody&gt;&lt;/tbody&gt;
-    &lt;/table&gt;
-    &lt;div class="na-detail" id="process-detail" style="display:none"&gt;&lt;/div&gt;
-  &lt;/div&gt;
-
-  &lt;!-- Connections Tab --&gt;
-  &lt;div class="na-panel" id="panel-connections"&gt;
-    &lt;div class="na-filters"&gt;
-      &lt;select id="filter-protocol"&gt;
-        &lt;option value="all"&gt;&lt;?= na_t('All Protocols') ?&gt;&lt;/option&gt;
-        &lt;option value="tcp"&gt;TCP&lt;/option&gt;
-        &lt;option value="tcp6"&gt;TCP6&lt;/option&gt;
-        &lt;option value="udp"&gt;UDP&lt;/option&gt;
-        &lt;option value="udp6"&gt;UDP6&lt;/option&gt;
-      &lt;/select&gt;
-      &lt;select id="filter-state"&gt;
-        &lt;option value="all"&gt;&lt;?= na_t('All States') ?&gt;&lt;/option&gt;
-        &lt;option value="ESTABLISHED"&gt;ESTABLISHED&lt;/option&gt;
-        &lt;option value="LISTEN"&gt;LISTEN&lt;/option&gt;
-        &lt;option value="TIME_WAIT"&gt;TIME_WAIT&lt;/option&gt;
-        &lt;option value="CLOSE_WAIT"&gt;CLOSE_WAIT&lt;/option&gt;
-        &lt;option value="SYN_SENT"&gt;SYN_SENT&lt;/option&gt;
-      &lt;/select&gt;
-      &lt;input type="text" id="filter-search" placeholder="&lt;?= na_t('Search IP, port, process...') ?&gt;"&gt;
-      &lt;label class="na-checkbox"&gt;
-        &lt;input type="checkbox" id="filter-hide-timewait"&gt; &lt;?= na_t('Hide TIME_WAIT') ?&gt;
-      &lt;/label&gt;
-    &lt;/div&gt;
-    &lt;table class="na-table" id="connection-table"&gt;
-      &lt;thead&gt;
-        &lt;tr&gt;
-          &lt;th data-col="process" class="sortable"&gt;&lt;?= na_t('Process') ?&gt;&lt;/th&gt;
-          &lt;th data-col="pid" class="sortable"&gt;PID&lt;/th&gt;
-          &lt;th data-col="protocol" class="sortable"&gt;&lt;?= na_t('Protocol') ?&gt;&lt;/th&gt;
-          &lt;th data-col="local_addr" class="sortable"&gt;&lt;?= na_t('Local Address') ?&gt;&lt;/th&gt;
-          &lt;th data-col="remote_addr" class="sortable"&gt;&lt;?= na_t('Remote Address') ?&gt;&lt;/th&gt;
-          &lt;th data-col="state" class="sortable"&gt;&lt;?= na_t('State') ?&gt;&lt;/th&gt;
-        &lt;/tr&gt;
-      &lt;/thead&gt;
-      &lt;tbody&gt;&lt;/tbody&gt;
-    &lt;/table&gt;
-  &lt;/div&gt;
-
-&lt;/div&gt;
-
-&lt;script&gt;
-var _NA_I18N = {
-  'Pause': &lt;?= na_js('Pause') ?&gt;,
-  'Resume': &lt;?= na_js('Resume') ?&gt;,
-  'Paused': &lt;?= na_js('Paused') ?&gt;,
-  'Live · 2s': &lt;?= na_js('Live · 2s') ?&gt;,
-  'Protocol': &lt;?= na_js('Protocol') ?&gt;,
-  'Local': &lt;?= na_js('Local') ?&gt;,
-  'Remote': &lt;?= na_js('Remote') ?&gt;,
-  'State': &lt;?= na_js('State') ?&gt;,
-  'Showing first 20 connections, switch to "Connections" tab for the full list.': &lt;?= na_js('Showing first 20 connections, switch to "Connections" tab for the full list.') ?&gt;,
-  'No processes with network activity found': &lt;?= na_js('No processes with network activity found') ?&gt;,
-  'Showing first {n} processes (of {total}, sorted by socket count)': &lt;?= na_js('Showing first {n} processes (of {total}, sorted by socket count)') ?&gt;,
-  'No connections match current filters': &lt;?= na_js('No connections match current filters') ?&gt;,
-  'Showing first {n} connections (of {total})': &lt;?= na_js('Showing first {n} connections (of {total})') ?&gt;,
-  'No network interfaces detected': &lt;?= na_js('No network interfaces detected') ?&gt;
-};
-function _(key) { return _NA_I18N[key] !== undefined ? _NA_I18N[key] : key; }
-&lt;/script&gt;
-&lt;script src="/plugins/network-analyze/js/network-analyze.js"&gt;&lt;/script&gt;
-    </INLINE>
+    <URL>&gitURL;/source/usr/local/emhttp/plugins/network-analyze/NetworkAnalyze.page</URL>
   </FILE>
 
   <!-- Install PHP backend -->
@@ -203,21 +73,12 @@ function _(key) { return _NA_I18N[key] !== undefined ? _NA_I18N[key] : key; }
     <URL>&gitURL;/source/usr/local/emhttp/plugins/network-analyze/css/network-analyze.css</URL>
   </FILE>
 
-  <!-- Install translations -->
-  <FILE Name="/usr/local/emhttp/languages/zh_CN/network-analyze.txt">
-    <URL>&gitURL;/source/usr/local/emhttp/languages/zh_CN/network-analyze.txt</URL>
-  </FILE>
-
-  <FILE Name="/usr/local/emhttp/languages/en_US/network-analyze.txt">
-    <URL>&gitURL;/source/usr/local/emhttp/languages/en_US/network-analyze.txt</URL>
-  </FILE>
-
   <!-- Install description -->
   <FILE Name="&emhttp;/README.md">
     <INLINE>
 **Network Analyze**
 
-实时网络监控插件——查看哪个进程在占用网络、当前有哪些网络连接。进程 I/O 速率、TCP/UDP 连接追踪、网卡实时速率、Docker 容器识别、命名空间过滤。基于 /proc 文件系统，无需安装额外软件。
+Real-time network monitoring plugin — see which processes are using the network and what connections are active. Process I/O rates, TCP/UDP connection tracking, NIC real-time rates, Docker container identification, namespace filtering. Reads /proc filesystem directly, no additional software required.
     </INLINE>
   </FILE>
 
@@ -230,8 +91,6 @@ function _(key) { return _NA_I18N[key] !== undefined ? _NA_I18N[key] : key; }
       chmod 644 &emhttp;/NetworkAnalyze.page
       chmod 644 &emhttp;/js/network-analyze.js
       chmod 644 &emhttp;/css/network-analyze.css
-      chmod 644 /usr/local/emhttp/languages/zh_CN/network-analyze.txt
-      chmod 644 /usr/local/emhttp/languages/en_US/network-analyze.txt
       chmod 644 &emhttp;/README.md
     </INLINE>
   </FILE>
